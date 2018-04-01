@@ -10,7 +10,7 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 
 ## Features:
 ```
-* !lock or !lock seconds - locks your computer immediately or with a time delay in seconds
+* !lock or !lock seconds - locks your computer immediately or with a time delay in seconds, e.g: !lock 30
 * !shutdown or !shutdown seconds
 * !sleep or !sleep seconds
 * !hibernate or !hibernate seconds
