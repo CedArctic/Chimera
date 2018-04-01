@@ -23,9 +23,10 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 ```
 
 ## Installation:
-Follow this video tutorial: -coming soon-
+Follow this video tutorial
 
-Alternatively follow Habchy's [instructions](https://github.com/Habchy/BasicBot/wiki) of how to setup BasicBot, but use chimera.py instead.
+[![Video Tutorial](https://j.gifs.com/l5m85j.gif)](https://www.youtube.com/watch?v=Q5gkddzSCgA)
+
 
 ## Contributing:
 Chimera was written to be modular so one can easily modify the code and enchance it. I welcome and greatly appreciate anyone who wished to contribute a module of their own.
@@ -50,5 +51,5 @@ async def cmd(cmnd):
 ```
 
 ## Credits:
-* Habchy for writing BasicBot which was the base for chimera
+* [Habchy](https://github.com/Habchy) for writing BasicBot which was the base for chimera
 * jestemkioskiem for his great [tutorial](https://steemit.com/utopian-io/@jestemkioskiem/build-your-own-discord-bot-with-python-1-basicbot)
