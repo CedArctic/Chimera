@@ -48,3 +48,7 @@ async def cmd(cmnd):
 	os.system(cmnd)
 	await asyncio.sleep(3)
 ```
+
+## Credits:
+* Habchy for writing BasicBot which was the base for chimera
+* jestemkioskiem for his great [tutorial](https://steemit.com/utopian-io/@jestemkioskiem/build-your-own-discord-bot-with-python-1-basicbot)
