@@ -39,7 +39,7 @@ Text Instructions:
 
 
 ## Contributing:
-Chimera was written to be modular so one can easily modify the code and enchance it. I welcome and greatly appreciate anyone who wished to contribute a module of their own.
+Chimera was written to be modular so one can easily modify the code and enchance it. I welcome and greatly appreciate anyone who wishes to contribute a module of their own.
 To keep things tidy if you need to import a python module do so on the top of the file in this fashion e.g:
 
 ```
