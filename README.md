@@ -19,7 +19,7 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 * !cmd "command" - executes cmd prompt command
 * !powershell "command" - executes powershell command
 
-* !screenshot or !screenshot seconds
+* !screenshot or !screenshot seconds - takes a screenshot of your computer and sends it back to you 
 * !say "Something to say" - uses powershell commands and a TTS engine to make your computer say something
 ```
 
