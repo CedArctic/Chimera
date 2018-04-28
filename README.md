@@ -31,11 +31,10 @@ Follow this video tutorial
 Text Instructions:
 1. Download & Install Python
 2. Open Powershell and execute: pip install discord.py
-3. Visit https://discordapp.com/developers/applications/me 
-4. Create an App with a Bot user and copy the Bot key
-5. Edit chymera.py to insert the Bot Key
-6. Launch Chimera and visit the URL printed to the console to add Chimera to a personal channel
-7. Enjoy!
+3. Create a bot and get its token and then get your channel ID by following these instructions: https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord
+4. Edit chymera.py to insert the Bot Token and Channel ID
+5. Launch Chimera and visit the URL printed to the console to add Chimera to a personal channel
+6. Enjoy!
 
 
 
