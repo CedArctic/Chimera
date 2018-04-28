@@ -19,6 +19,7 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 * !cmd "command" - executes cmd prompt command
 * !powershell "command" - executes powershell command
 
+* !screenshot or !screenshot seconds
 * !say "Something to say" - uses powershell commands and a TTS engine to make your computer say something
 ```
 
@@ -59,6 +60,10 @@ async def cmd(cmnd):
 	os.system(cmnd)
 	await asyncio.sleep(3)
 ```
+
+## Changelog:
+* April 1st 2018: Initial Release
+* April 28th 2018: Added Screenshot feature
 
 ## Credits:
 * [Habchy](https://github.com/Habchy) for writing BasicBot which was the base for chimera
