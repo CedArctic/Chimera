@@ -14,7 +14,7 @@ import time
 # Dependency of screenshot
 from mss import mss
 
-# Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
+# Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
 
 # Enter Discord Bot Token & Channel ID:
