@@ -57,7 +57,7 @@ async def cmd(cmnd):
 @client.command()
 async def powershell(cmnd):
 	await client.say("Executing in powershell: " + cmnd)
-	os.system(cmnd)
+	os.system("powershell {}".format(cmnd))
 	await asyncio.sleep(3)
 
 
