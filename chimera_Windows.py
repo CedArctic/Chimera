@@ -5,10 +5,10 @@ from discord.ext.commands import Bot
 from discord.ext import commands
 import platform
 
-# Dependency of: lock, shutdown, sleep, hibernate, say, restart, screenshot
+# Dependency of: lock, shutdown, sleep, hibernate, logoff, say, restart, screenshot
 import os
 
-# Dependency of: lock, shutdown, sleep, hibernate, say, restart
+# Dependency of: lock, shutdown, sleep, hibernate, logoff, say, restart
 import time
 
 # Dependency of screenshot
@@ -119,6 +119,18 @@ async def hibernate(seconds = 0):
 	if time != 0:
 		time.sleep(seconds)
 	os.system("rundll32.exe PowrProf.dll,SetSuspendState")
+
+
+# Module: logoff
+# Description: Logs the user out of the system
+# Usage: !logoff or !logoff secondsToLogoff
+# Dependencies: time, os
+@client.command()
+async def logoff(seconds = 0):
+	await client.say("Logging out of system.")
+	if time != 0:
+		time.sleep(seconds)
+	os.system("Shutdown.exe -l")
 
 
 # Module: screenshot
