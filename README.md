@@ -7,6 +7,7 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 ## Requirements:
 * Python 3
 * discord.py
+* mss
 
 ## Features:
 ```
@@ -30,7 +31,7 @@ Follow this video tutorial
 
 Text Instructions:
 1. Download & Install Python
-2. Open Powershell and execute: pip install discord.py
+2. Open Powershell and execute: ```pip install discord.py mss```
 3. Create a bot and get its token and then get your channel ID by following these instructions: https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord
 4. Edit chimera.py to insert the Bot Token and Channel ID
 5. Launch Chimera and visit the URL printed to the console to add Chimera to a personal channel
