@@ -24,8 +24,8 @@ operating_sys = get_operating()
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
 
 # Enter Discord Bot Token & Channel ID:
-BOT_TOKEN = 'NDk3MDg1MzkyODYwNzQxNjQ4.DpaCrA.3P7mKaOGdxD28rK5luDpyaKG50s'
-CHANNEL_ID = '347152989296787459'
+BOT_TOKEN = 'Enter Token Here'
+CHANNEL_ID = 'Enter Channel ID'
 
 @client.event
 async def on_ready():
