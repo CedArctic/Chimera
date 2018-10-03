@@ -18,7 +18,7 @@ from mss import mss
 from helpers import get_operating
 
 # Platform name 
-operating_sys = get_operating()
+operating_sys = get_operating
 
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
