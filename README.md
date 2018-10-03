@@ -11,7 +11,7 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 ## Features:
 ```
 * !lock or !lock seconds - locks your computer immediately or with a time delay in seconds, e.g: !lock 30
-* !shutdown or !shutdown seconds
+* !shutdown or !shutdown seconds 
 * !sleep or !sleep seconds
 * !hibernate or !hibernate seconds
 * !restart or !restart seconds
@@ -22,6 +22,7 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 * !screenshot or !screenshot seconds - takes a screenshot of your computer and sends it back to you 
 * !say "Something to say" - uses powershell commands and a TTS engine to make your computer say something
 ```
+Some commands may require elevated privileges on linux.
 
 ## Installation:
 Follow this video tutorial

