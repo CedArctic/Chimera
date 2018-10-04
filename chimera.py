@@ -18,8 +18,11 @@ from mss import mss
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
 
 # Enter Discord Bot Token & Channel ID:
-BOT_TOKEN = 'Enter Token Here'
-CHANNEL_ID = 'Enter Channel ID here'
+import local_credentials as LocalCredentials
+
+#Create a local_credentials (added to .gitignore) file with the very same variables so there is no risk to commit credentials by mistake
+BOT_TOKEN = LocalCredentials.BOT_TOKEN
+CHANNEL_ID = LocalCredentials.CHANNEL_ID
 
 @client.event
 async def on_ready():
