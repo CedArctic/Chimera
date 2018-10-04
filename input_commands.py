@@ -22,6 +22,7 @@ VK_TAB  = 0x09
 VK_MENU = 0x12
 VK_VOLUME_DOWN = 0xAE
 VK_VOLUME_UP = 0xAF
+VK_VOLUME_MUTE = 0xAD
 VK_MEDIA_NEXT_TRACK = 0xB0
 VK_MEDIA_PREV_TRACK = 0xB1
 VK_MEDIA_STOP = 0xB2
@@ -111,6 +112,9 @@ class InputCommands():
     @classmethod    
     def up_volume(cls):
         PressKey(VK_VOLUME_UP)
+    @classmethod    
+    def mute_volume(cls):
+        PressKey(VK_VOLUME_MUTE)
     
     @classmethod    
     def media_next(cls):

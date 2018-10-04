@@ -176,8 +176,9 @@ async def media(*args):
 	command = args[0]
 	times = int(args[1]) if len(args)>1 else 1
 	switcher = {
-		'vol_up':InputCommands.up_volume,
-		'vol_down':InputCommands.down_volume,
+		'vol-up':InputCommands.up_volume,
+		'vol-down':InputCommands.down_volume,
+		'vol-mute':InputCommands.mute_volume,
 		'next':InputCommands.media_next,
 		'prev':InputCommands.media_previous,
 		'stop':InputCommands.media_stop,
