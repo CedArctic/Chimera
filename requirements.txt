@@ -1,2 +1,3 @@
 discord.py
 mss
+opencv-python
