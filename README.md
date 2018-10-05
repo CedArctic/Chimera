@@ -23,6 +23,7 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 * !screenshot or !screenshot seconds - takes a screenshot of your computer and sends it back to you 
 * !say "Something to say" - uses powershell commands and a TTS engine to make your computer say something
 ```
+Note: Some commands may require elevated privileges on linux.
 
 ## Installation:
 Follow this video tutorial
