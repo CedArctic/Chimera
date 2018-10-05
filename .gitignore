@@ -1,0 +1,9 @@
+.env/
+.settings/
+__pycache__/
+local_credentials.py
+.project
+.pydevproject
+screenshot.png
+photo.jpg
+video.avi

