@@ -1,6 +1,8 @@
 
 import cv2
 from datetime import datetime, timedelta
+import sys
+import asyncio
 
 class CameraControl:
     
@@ -25,7 +27,7 @@ class CameraControl:
         
         while(cap.isOpened()):
             ret, frame = cap.read()
-            if ret==True and start + timedelta(seconds=time) > datetime.now() :
+            if ret==True and start + timedelta(seconds=int(time)) > datetime.now() :
                 out.write(frame)
             else:
                 break
@@ -43,5 +45,11 @@ class CameraControl:
             cv2.imwrite(filename,frame)
 
         cap.release()
-        
-        
+
+#workaround due to bug on opencv lib - camera is not released if process is not killed
+function = sys.argv[1]
+if function == 'photo':
+    CameraControl.photo_capture()
+if function == 'video':
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(CameraControl.video_capture(*sys.argv[2:]))

