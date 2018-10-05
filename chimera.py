@@ -15,7 +15,10 @@ import time
 from mss import mss
 
 # Dependency of media
-from input_commands import InputCommands
+from lib.input_commands import InputCommands
+
+# Dependency of camera
+#from lib.camera_control import CameraControl #commented because of the workaround
 
 # For using commands in different systems
 from helpers import get_operating
@@ -225,12 +228,10 @@ async def say(txt):
 
 # Module: media
 # Description: Controls Media Features
-# Usage: !media command times
+# Usage: !media command or !media command times
 # Dependencies: ctypes, time
 @client.command()
-async def media(*args):
-	command = args[0]
-	times = int(args[1]) if len(args)>1 else 1
+async def media(command,times=1):
 	switcher = {
 		'vol-up':InputCommands.up_volume,
 		'vol-down':InputCommands.down_volume,
@@ -248,7 +249,28 @@ async def media(*args):
 	
 	await client.say('Media Adjusted!')
 
+
+# Module: camera
+# Description: Records a video or takes a photo (no audio)
+# Usage: !camera command time
+# Dependencies: cv2, datetime, timedelta
+@client.command(pass_context = True)
+async def camera(ctx, command, time=5):
+	await client.say('Recording!')
+	python_alias = LocalCredentials.PYTHON_ALIAS
 	
+	if command == 'photo':
+# 		CameraControl.photo_capture()
+		os.system("{} lib/camera_control.py photo".format(python_alias))#workaround
+		await client.send_file(ctx.message.channel, 'photo.jpg')
+		
+	if command == 'video':
+# 		await CameraControl.video_capture(time=time)
+		os.system("{} lib/camera_control.py video {}".format(python_alias,time))#workaround
+		await client.send_file(ctx.message.channel, 'video.avi')
+	
+	
+
 # Module: echo
 # Description: Turns command output display to discord chat on and off (works for !cmd and !powershell)
 # Usage: !echo off or !echo on
