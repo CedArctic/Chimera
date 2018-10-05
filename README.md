@@ -32,11 +32,10 @@ Follow this video tutorial
 
 Text Instructions:
 1. Download & Install Python
-2. Open Powershell and execute: ```pip install discord.py mss```. Or if you are in the repository folder, execute: ```pip install -r requirements.txt```
-3. Create a bot and get its token and then get your channel ID by following these instructions: https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord
-4. Download the repository, edit local_credentials_example.py to insert the Bot Token and Channel ID and then rename the file to local_credentials.py
-5. Launch Chimera.py and visit the URL printed to the console to add Chimera to a personal channel
-6. Enjoy!
+2. Create a bot and get its token and then get your channel ID by following these instructions: https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord
+3. Download the repository, run setup.bat(Windows) or setup.sh(Linux) and put your Bot Token in the newly created local_credentials.py. 
+4. Launch Chimera.py and visit the URL printed to the console to add Chimera to a personal channel
+5. Enjoy!
 
 
 
