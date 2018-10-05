@@ -155,7 +155,7 @@ async def logoff(seconds = 0):
 # Module: screenshot
 # Description: Takes a screenshot and sends it back
 # Usage: !screenshot or !screenshot secondsToScreenshot
-# Dependencies: vc2, datetime, timedelta, sys, asyncio
+# Dependencies: time, os, mss
 @client.command(pass_context = True)
 async def screenshot(ctx, seconds = 0):
 	if os.path.isfile('screenshot.png'):  # Check if a screenshot.png exists, if yes, delete it so it can be replaced
