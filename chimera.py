@@ -14,25 +14,26 @@ import time
 # Dependency of screenshot
 from mss import mss
 
-# Dependency of media
-from lib.input_commands import InputCommands
-
 # Dependency of camera
-#from lib.camera_control import CameraControl #commented because of the workaround
+# from lib.camera_control import CameraControl #commented because of the workaround
 
 # For using commands in different systems
 from helpers import get_operating
 
-# Platform name 
+# Platform name
 operating_sys = get_operating()
 
+# Dependency of media
+if operating_sys == "Windows":
+	from lib.input_commands import InputCommands
 
 # Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
-client = Bot(description="A remote administration tool for discord", command_prefix="!", pm_help = False)
+client = Bot(description="A remote administration tool for discord",
+             command_prefix="!", pm_help=False)
 
 import local_credentials as LocalCredentials
 
-#Create a local_credentials (added to .gitignore) file with the very same variables so there is no risk to commit credentials by mistake
+# Create a local_credentials (added to .gitignore) file with the very same variables so there is no risk to commit credentials by mistake
 BOT_TOKEN = LocalCredentials.BOT_TOKEN
 CHANNEL_ID = LocalCredentials.CHANNEL_ID
 
@@ -46,9 +47,11 @@ async def on_ready():
 	print('--------')
 	print('Chimera Remote Administration Bot by CedArctic')
 	print('--------')
-	print('Logged in as '+client.user.name+' (ID:'+client.user.id+') | Connected to '+str(len(client.servers))+' servers | Connected to '+str(len(set(client.get_all_members())))+' users')
+	print('Logged in as '+client.user.name+' (ID:'+client.user.id+') | Connected to ' +
+	      str(len(client.servers))+' servers | Connected to '+str(len(set(client.get_all_members())))+' users')
 	print('--------')
-	print('Current Discord.py Version: {} | Current Python Version: {}'.format(discord.__version__, platform.python_version()))
+	print('Current Discord.py Version: {} | Current Python Version: {}'.format(
+	    discord.__version__, platform.python_version()))
 	print('--------')
 	print('Use this link to invite {}:'.format(client.user.name))
 	print('https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8'.format(client.user.id))
@@ -80,9 +83,9 @@ async def cmd(cmnd):
 async def powershell(cmnd):
 	if operating_sys == "Windows":
 		await client.say("Executing in powershell: " + cmnd)
-	  cmnd_result = os.popen("powershell {}".format(cmnd)).read()
-	  if display_output == True:
-		  await client.say(cmnd_result)
+		cmnd_result = os.popen("powershell {}".format(cmnd)).read()
+		if display_output == True:
+			    await client.say(cmnd_result)
 	else:
 		await client.say("Powershell is only available in Windows")
 	await asyncio.sleep(3)
@@ -221,6 +224,9 @@ async def say(txt):
 	if operating_sys == "Windows":
 		await client.say("Saying: " + txt)
 		os.system("powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
+	elif operating_sys == "Linux":
+		await client.say("Saying: " + txt)
+		os.system('spd-say "{}"'.format(txt))
 	else:
 		await client.say("Can't use TTS")
 	await asyncio.sleep(3)
@@ -232,22 +238,25 @@ async def say(txt):
 # Dependencies: ctypes, time
 @client.command()
 async def media(command,times=1):
-	switcher = {
-		'vol-up':InputCommands.up_volume,
-		'vol-down':InputCommands.down_volume,
-		'vol-mute':InputCommands.mute_volume,
-		'next':InputCommands.media_next,
-		'prev':InputCommands.media_previous,
-		'stop':InputCommands.media_stop,
-		'play':InputCommands.media_play_pause,
-		'pause':InputCommands.media_play_pause
-		}
-	
-	for time in range(0,times):
-		switcher[command]()
-		await asyncio.sleep(0.5)
-	
-	await client.say('Media Adjusted!')
+	if operating_sys == "Windows":
+		switcher = {
+			'vol-up':InputCommands.up_volume,
+			'vol-down':InputCommands.down_volume,
+			'vol-mute':InputCommands.mute_volume,
+			'next':InputCommands.media_next,
+			'prev':InputCommands.media_previous,
+			'stop':InputCommands.media_stop,
+			'play':InputCommands.media_play_pause,
+			'pause':InputCommands.media_play_pause
+			}
+		
+		for time in range(0,times):
+			switcher[command]()
+			await asyncio.sleep(0.5)
+		
+		await client.say('Media Adjusted!')
+	else:
+		await client.say("Media only adjustable on Windows.")
 
 
 # Module: camera
