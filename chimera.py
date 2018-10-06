@@ -238,25 +238,22 @@ async def say(txt):
 @client.command()
 async def media(command,times=1):
 	media_control = MediaControlAdapter(operating_sys)
-	if operating_sys == "Windows":
-		switcher = {
-			'vol-up':media_control.up_volume,
-			'vol-down':media_control.down_volume,
-			'vol-mute':media_control.mute_volume,
-			'next':media_control.media_next,
-			'prev':media_control.media_previous,
-			'stop':media_control.media_stop,
-			'play':media_control.media_play_pause,
-			'pause':media_control.media_play_pause
-			}
-		
-		for time in range(0,times):
-			switcher[command]()
-			await asyncio.sleep(0.5)
-		
-		await client.say('Media Adjusted!')
-	else:
-		await client.say("Media only adjustable on Windows.")
+	switcher = {
+		'vol-up':media_control.up_volume,
+		'vol-down':media_control.down_volume,
+		'vol-mute':media_control.mute_volume,
+		'next':media_control.media_next,
+		'prev':media_control.media_previous,
+		'stop':media_control.media_stop,
+		'play':media_control.media_play_pause,
+		'pause':media_control.media_play_pause
+		}
+	
+	for time in range(0,times):
+		switcher[command]()
+		await asyncio.sleep(0.5)
+	
+	await client.say('Media Adjusted!')
 
 
 # Module: camera
