@@ -1,3 +1,9 @@
+<p align="center">
+  <img  width="120" height="120" src="https://user-images.githubusercontent.com/11155359/46568982-b4a6c980-c956-11e8-9232-64b64be1369c.png">
+</p>
+
+
+
 # Chimera
 Chimera (not the mythical beast), is a System Remote Control Discord Bot for Windows written in Python discord.py.
 Using chimera you can easily control your computer remotely and have it do from simple tasks such as shutdown, sleep and lock to talking or executing powershell commands.
