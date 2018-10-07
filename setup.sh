@@ -2,14 +2,25 @@ echo "Installing Required Packages..."
 
 pip3 install -U -r ./requirements.txt
 
-echo "Creating local_credentials.py..."
+configfile="configs.py"
 
-touch local_credentials.py
+echo "Creating $configfile ..."
 
-printf "BOT_TOKEN = 'Enter Token Here'\n\n" > local_credentials.py
+touch $configfile
 
-printf "CHANNEL_ID = 'Enter Channel ID Here'\n\n" >> local_credentials.py
+printf "BOT_TOKEN = 'Enter Token Here'\n\n" > $configfile
 
-printf "PYTHON_ALIAS = 'python' #only change if you have multiple python installations" >> local_credentials.py
+printf "CHANNEL_ID = 'Enter Channel ID Here'\n\n" >> $configfile
+
+printf "PYTHON_ALIAS = 'python' #only change if you have multiple python installations\n\n" >> $configfile
+
+printf "DISK_LOGS_ENABLED = True\n\n" >> $configfile
+
+printf "initial_display_output = True\n\n" >> $configfile
+
+printf "initial_location = ''\n\n" >> $configfile
+
+printf "discord_logs_enabled = False\n\n" >> $configfile
 
 echo "Done. Please fill the required fields in local_credentials.py"
+

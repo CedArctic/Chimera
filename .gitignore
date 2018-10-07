@@ -1,6 +1,8 @@
 .env/
 .settings/
 __pycache__/
+logs/
+configs.py
 local_credentials.py
 .project
 .pydevproject

@@ -4,16 +4,36 @@ echo Installing required packages.
 
 pip install -U -r .\requirements.txt
 
-echo Creating local_credentials.py
+SET configfile="configs.py"
 
-echo BOT_TOKEN = 'Enter Token Here' > local_credentials.py
+echo Creating %configfile%
 
-echo. >> local_credentials.py
+echo BOT_TOKEN = 'Enter Token Here' > %configfile%
 
-echo CHANNEL_ID = 'Enter Channel ID here' >> local_credentials.py
+echo. >> %configfile%
 
-echo. >> local_credentials.py
+echo CHANNEL_ID = 'Enter Channel ID here' >> %configfile%
 
-echo PYTHON_ALIAS = 'python' #only change if you have multiple python installations >> local_credentials.py
+echo. >> %configfile%
 
-echo Done. Please fill the required field in local_credentials.py
+echo PYTHON_ALIAS = 'python' #only change if you have multiple python installations >> %configfile%
+
+echo. >> %configfile%
+
+echo DISK_LOGS_ENABLED = True >> %configfile%
+
+echo. >> %configfile%
+
+echo initial_display_output = True >> %configfile%
+
+echo. >> %configfile%
+
+echo initial_location = "" >> %configfile%
+
+echo. >> %configfile%
+
+echo discord_logs_enabled = False >> %configfile%
+
+echo Done. Please fill the required field in %configfile%
+
+pause

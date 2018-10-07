@@ -1,5 +1,60 @@
 import sys
+import os
 from lib.input_commands import InputCommands
+import logging
+import configs as Configs
+from datetime import datetime
+
+class Logger(object):
+
+    DIRECTORY = 'logs'
+    if not os.path.exists(DIRECTORY):
+        os.makedirs(DIRECTORY)
+    now = (datetime.now())
+    logging.basicConfig(filename='{}/{}.txt'.format(DIRECTORY,now.strftime('%Y-%m-%d')))
+    log = logging.getLogger()
+
+    def __init__(self,client):
+        self.client = client
+
+    def __call__(self, f):
+        
+        async def run(*args, **kwargs):
+            
+            try:
+                return await f(*args,**kwargs)
+            except Exception as e:
+                message = '{} - [{}] while executing ![{}] with params [{}] and named params [{}]'.format(self.now.strftime('%Y-%m-%d %H:%M:%S'),str(e),f.__name__,args,kwargs)
+                if Configs.DISK_LOGS_ENABLED:
+                    self.log.error(message)
+                if Configs.discord_logs_enabled:
+                    await self.client.say(message)
+                raise
+                
+        run.__name__ = f.__name__
+        return run
+    
+# def logger(f):
+#     directory = 'logs'
+#     if not os.path.exists(directory):
+#         os.makedirs(directory)
+#     now = (datetime.now())
+#     logging.basicConfig(filename='{}/{}.txt'.format(directory,now.strftime('%Y-%m-%d')))
+#     log = logging.getLogger()
+#     
+#     async def decorator(*args,**kwargs):
+#         try:
+#             return await f(*args,**kwargs)
+#         except Exception as e:
+#             message = '{} - [{}] while executing ![{}] with params [{}] and named params [{}]'.format(now.strftime('%Y-%m-%d %H:%M:%S'),str(e),f.__name__,args,kwargs)
+#             if Configs.DISK_LOGS_ENABLED:
+#                 log.error(message)
+#             if Configs.discord_logs_enabled:
+#                 await client.say(message)
+#             raise
+#     
+#     decorator.__name__ = f.__name__
+#     return decorator
 
 def get_operating():
     platforms = {
