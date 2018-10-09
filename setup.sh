@@ -18,7 +18,7 @@ printf "DISK_LOGS_ENABLED = True\n\n" >> $configfile
 
 printf "initial_display_output = True\n\n" >> $configfile
 
-printf "initial_location = ''\n\n" >> $configfile
+printf "initial_path = ''\n\n" >> $configfile
 
 printf "discord_logs_enabled = False\n\n" >> $configfile
 

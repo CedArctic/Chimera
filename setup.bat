@@ -28,7 +28,7 @@ echo initial_display_output = True >> %configfile%
 
 echo. >> %configfile%
 
-echo initial_location = "" >> %configfile%
+echo initial_path = "" >> %configfile%
 
 echo. >> %configfile%
 

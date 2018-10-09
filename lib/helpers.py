@@ -4,6 +4,7 @@ from lib.input_commands import InputCommands
 import logging
 import configs as Configs
 from datetime import datetime
+from inspect import signature
 
 class Logger(object):
 
@@ -24,7 +25,7 @@ class Logger(object):
             try:
                 return await f(*args,**kwargs)
             except Exception as e:
-                message = '{} - [{}] while executing ![{}] with params [{}] and named params [{}]'.format(self.now.strftime('%Y-%m-%d %H:%M:%S'),str(e),f.__name__,args,kwargs)
+                message = '{} - [{}] while executing [!{}] with params [{}] and named params [{}]'.format(self.now.strftime('%Y-%m-%d %H:%M:%S'),str(e),f.__name__,args,kwargs)
                 if Configs.DISK_LOGS_ENABLED:
                     self.log.error(message)
                 if Configs.discord_logs_enabled:
@@ -32,6 +33,7 @@ class Logger(object):
                 raise
                 
         run.__name__ = f.__name__
+        run.__signature__ = signature(f)
         return run
     
 # def logger(f):

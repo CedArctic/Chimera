@@ -6,7 +6,7 @@ import asyncio
 def memory(f):
     async def new_f(*args,**kwargs):
         memory = Memory()
-        return await f(memory=memory,*args,**kwargs)
+        return await f(*args,**kwargs, memory=memory)
     
     new_f.__name__ = f.__name__
     return new_f
