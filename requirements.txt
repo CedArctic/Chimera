@@ -1,3 +1,5 @@
 discord.py
 mss
 opencv-python
+pynput
+requests
