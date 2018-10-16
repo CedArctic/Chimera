@@ -3,3 +3,4 @@ mss
 opencv-python
 pynput
 requests
+python-dotenv
