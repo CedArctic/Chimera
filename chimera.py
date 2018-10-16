@@ -5,6 +5,12 @@ from discord.ext.commands import Bot
 from discord.ext import commands
 import platform
 
+from dotenv import load_dotenv
+load_dotenv()
+
+# Used by !screenshot and !camera commands
+import configs as Configs
+
 # Dependency of: lock, shutdown, sleep, hibernate, logoff, say, restart, screenshot
 import os
 
@@ -35,16 +41,11 @@ operating_sys = get_operating()
 
 # Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
 client = Bot(description="A remote administration tool for discord",
-             command_prefix="!", pm_help=False)
+             command_prefix=Configs.BOT_PREFIX, pm_help=False)
 
 from lib.helpers import Logger
-
-# Used by !screenshot and !camera commands
-import configs as Configs
-
 @client.event
 async def on_ready():
-    
     print('--------')
     print('Chimera Remote Administration Bot by CedArctic')
     print('--------')
@@ -60,7 +61,7 @@ async def on_ready():
     print('Based on Habchy\'s BasicBot')
     print('Github Link: https://github.com/Habchy/BasicBot')
     print('--------')
-    return await client.change_presence(game=discord.Game(name='with your PC'))    
+    return await client.change_presence(game=discord.Game(name='with your PC'))
 
 
 # Module: cmd
@@ -72,7 +73,7 @@ async def on_ready():
 async def cmd(cmnd):
     await client.say("Executing in command prompt: " + cmnd)
     cmnd_result = os.popen(cmnd).read()
-    if Configs.initial_display_output == True:
+    if Configs.initial_display_output:
         await client.say(cmnd_result)
     await asyncio.sleep(3)
 
@@ -87,7 +88,7 @@ async def powershell(cmnd):
     if operating_sys == "Windows":
         await client.say("Executing in powershell: " + cmnd)
         cmnd_result = os.popen("powershell {}".format(cmnd)).read()
-        if Configs.initial_display_output == True:
+        if Configs.initial_display_output:
             await client.say(cmnd_result)
     else:
         await client.say("Powershell is only available in Windows")
@@ -205,7 +206,7 @@ async def logoff(seconds = 0):
     else:
         await client.say("Can't logoff system.")
         await asyncio.sleep(3)
-    
+
 
 
 # Module: screenshot
@@ -261,11 +262,11 @@ async def media(command,times=1):
         'play':media_control.media_play_pause,
         'pause':media_control.media_play_pause
         }
-    
+
     for time in range(0,times):
         switcher[command]()
         await asyncio.sleep(0.5)
-    
+
     await client.say('Media Adjusted!')
 
 
@@ -278,19 +279,16 @@ async def media(command,times=1):
 async def camera(ctx, command, time=5):
     await client.say('Recording!')
     python_alias = Configs.PYTHON_ALIAS
-    
+
     if command == 'photo':
 #         CameraControl.photo_capture()
         os.system("{} lib/camera_control.py photo".format(python_alias))#workaround
         await client.send_file(ctx.message.channel, 'photo.jpg')
-        
+
     if command == 'video':
 #         await CameraControl.video_capture(time=time)
         os.system("{} lib/camera_control.py video {}".format(python_alias,time))#workaround
         await client.send_file(ctx.message.channel, 'video.avi')
-    
-    
-    
 # Module: echo
 # Description: Turns command output display to discord chat on and off (works for !cmd and !powershell)
 # Usage: !echo off or !echo on
@@ -337,38 +335,38 @@ async def log(param, date=None):
 async def file(ctx, command, *args):
     filesystem_control = FileSystemControl(Configs.initial_path)
     await filesystem_control.load_path_from_memory()
-    
+
     async def set_absolute_path(path):
         new_path = await filesystem_control.set_path(path, False)
         return 'Current location set to {}'.format(new_path)
-    
+
     async def set_relative_path(path):
         new_path = await filesystem_control.set_path(path, True)
         return 'Current location set to {}'.format(new_path)
-    
+
     async def retrive_file(path=None):
         file_path = await filesystem_control.retrieve_file(path)
         await client.send_file(ctx.message.channel, file_path)
-        
+
     async def save_file(path=None):
         filename = ctx.message.attachments[0]['filename']
         url = ctx.message.attachments[0]['url']
-        
+
         r = requests.get(url, allow_redirects=True)
         if r.status_code/100 != 2:
             raise Exception('Download request from Discord returned {}'.r.status_code)
         file = r.content
-        
+
         file_path = await filesystem_control.save_file(file,filename,path)
         return 'File Saved on {}'.format(file_path)
-    
+
     async def list_directory():
         dir_list = await filesystem_control.list_directory()
         result = "Directory items:\n"
         for item in dir_list:
             result += "`{}`\n".format(item.name)
         return result
-    
+
     switcher = {
         'absolute':set_absolute_path,
         'relative':set_relative_path,
@@ -376,7 +374,7 @@ async def file(ctx, command, *args):
         'retrieve':retrive_file,
         'save':save_file
         }
-    
+
     if len(args)>0:
         message = await switcher[command](*args)
     else:
