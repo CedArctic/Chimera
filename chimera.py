@@ -311,9 +311,9 @@ async def echo(status):
 # Description: Turns on of off logs in chat. Also can be used to retrieve Chimera execution logs
 # Usage: !log [off|on] | [show] [date (format: YYYY-MM-DD)]
 # Dependencies: logging, datetime
-@client.command()
+@client.command(pass_context = True)
 @Logger(client)
-async def log(param, date=None):
+async def log(ctx,param, date=None):
     if param == "on":
         Configs.discord_logs_enabled = True
         await client.say("Exceptions log will now be displayed in chat.")
@@ -322,9 +322,7 @@ async def log(param, date=None):
         await client.say("Running on silent mode now.")
     elif param == "show":
         date = date if date else (datetime.now()).strftime('%Y-%m-%d')
-        file = open('{}/{}.txt'.format(Logger.DIRECTORY,date),'r')
-        log_text = file.read()
-        await client.say(log_text)
+        await client.send_file(ctx.message.channel, '{}/{}.txt'.format(Logger.DIRECTORY,date))
     else:
         await client.say("Parameter of !log can be off or on. ")
 
@@ -382,5 +380,36 @@ async def file(ctx, command, *args):
     else:
         message = await switcher[command]()
     if message: await client.say(message)
+
+
+# Module: file
+# Description: Allows file download, upload and system navigation
+# Usage: !file [command] [[path]|[times]]
+# Dependencies: filesystem_control, requests
+@client.command()
+@Logger(client)
+async def helpme(command=None):
+    readme = open('readme.md','r')
+    readme = readme.read()
+    readme = readme.split('## ')
+    
+    if command:
+        features = [x for x in readme if x.split('\n',1)[0] == 'Features Documentation:']
+        features = features[0]
+        
+        message = features
+        
+        features = features.split('* ')
+        feature = [x for x in features[1:] if x.replace("!","").split(' ',1)[0] == command]
+        feature = feature[0]
+        
+        message = "```{}```".format(feature)
+    else:
+        features = [x for x in readme if x.split('\n',1)[0] == 'Features List:']
+        features = features[0]
+        
+        message = "```{}```".format(features)
+    
+    await client.say(message)
 
 client.run(Configs.BOT_TOKEN)

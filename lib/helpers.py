@@ -29,7 +29,7 @@ class Logger(object):
                 if Configs.DISK_LOGS_ENABLED:
                     self.log.error(message)
                 if Configs.discord_logs_enabled:
-                    await self.client.say(message)
+                    await self.client.say("`{}`".format(message))
                 raise
                 
         run.__name__ = f.__name__

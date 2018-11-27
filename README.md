@@ -15,19 +15,86 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 * discord.py
 * mss
 
-## Features:
+## Features List:
+* lock
+* shutdown
+* sleep
+* hibernate
+* restart
+* logoff
+* cmd
+* powershell
+* screenshot
+* say
+* media
+* camera
+* echo
+* log
+* file
+* helpme
+
+## Features Documentation:
 ```
-* !lock or !lock seconds - locks your computer immediately or with a time delay in seconds, e.g: !lock 30
+* !lock or !lock seconds
+	> locks your computer immediately or with a time delay in seconds, e.g: !lock 30
 * !shutdown or !shutdown seconds
+	> shuts down your computer immediately or with a time delay in seconds, e.g: !shutdown 30
 * !sleep or !sleep seconds
+	> sleeps your computer immediately or with a time delay in seconds, e.g: !sleep 30
 * !hibernate or !hibernate seconds
+	> hibernates your computer immediately or with a time delay in seconds, e.g: !hibernate 30
 * !restart or !restart seconds
+	> restarts your computer immediately or with a time delay in seconds, e.g: !restart 30
+* !logoff or !logoff seconds
+	> logs off your user immediately or with a time delay in seconds, e.g: !logoff 30
 
-* !cmd "command" - executes cmd prompt command
-* !powershell "command" - executes powershell command
+* !cmd "command"
+	> executes cmd prompt command
+* !powershell "command"
+	> executes powershell command
 
-* !screenshot or !screenshot seconds - takes a screenshot of your computer and sends it back to you 
-* !say "Something to say" - uses powershell commands and a TTS engine to make your computer say something
+* !screenshot or !screenshot seconds
+	> takes a screenshot of your computer and sends it back to you 
+* !say "Something to say"
+	> uses powershell commands and a TTS engine to make your computer say something
+
+* !media command or !media command times
+	> controls computer media playback and volume once or repeatedly, e.g: !media prev 2
+		list of commands:
+		- vol-up
+		- vol-down
+		- vol-mute
+		- next
+		- prev
+		- stop
+		- play
+		- pause
+		
+* !camera command or !camera command time
+	> controls computer camera for taking photo or filming for a given time in seconds (default is 5 seconds), e.g: !camera video 10
+		list of commands:
+		- video time
+		- photo
+		
+* !echo status
+	> turns on or off !cmd and !powershell command echo in chat. When turned on, the command return will be sent to chat, e.g: !echo on
+	
+* !log param or !log param date
+	> turns on or off chat logging or show log for given date (defaults to today), e.g: !log show 2018-10-16
+
+* !file command or !file command path
+	> browses, saves and retrieves files from or to your computer, e.g: !file relative ..
+		list of commands:
+		- absolute => sets an absolute path
+		- relative => sets a relative path
+		- list => lists current path
+		- retrieve => uploads a file to the chat
+		- save => saves a file to the HD from the chat
+		
+* !helpme or !helpme command
+	> shows Chimera help, listing commands of shows help for a specific command, e.g: !helpme screenshot
+
+* EOF
 ```
 Note: Some commands may require elevated privileges on linux.
 
