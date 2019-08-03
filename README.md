@@ -141,3 +141,13 @@ async def cmd(cmnd):
 ## Credits:
 * [Habchy](https://github.com/Habchy) for writing BasicBot which was the base for chimera
 * jestemkioskiem for his great [tutorial](https://steemit.com/utopian-io/@jestemkioskiem/build-your-own-discord-bot-with-python-1-basicbot)
+
+## Contributors:
+* [Zachman61](https://github.com/Zachman61)
+* [vfcoelho](https://github.com/vfcoelho)
+* [DragosPopse](https://github.com/DragosPopse)
+* [TGlide](https://github.com/TGlide)
+* [vlad4him](https://github.com/vlad4him)
+* [sn0wmanmj](https://github.com/sn0wmanmj)
+* [cominixo01](https://github.com/cominixo01)
+* [medusalix](https://github.com/medusalix)
