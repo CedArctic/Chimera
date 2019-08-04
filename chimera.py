@@ -6,6 +6,7 @@ from discord.ext import commands
 import platform
 
 from dotenv import load_dotenv
+
 load_dotenv()
 
 # Used by !screenshot and !camera commands
@@ -40,17 +41,19 @@ from datetime import datetime
 operating_sys = get_operating()
 
 # Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
-client = Bot(description="A remote administration tool for discord",
+client = Bot(description="A remote administration bot for Discord",
              command_prefix=Configs.BOT_PREFIX, pm_help=False)
 
 from lib.helpers import Logger
+
+
 @client.event
 async def on_ready():
     print('--------')
     print('Chimera Remote Administration Bot by CedArctic')
     print('--------')
-    print('Logged in as '+client.user.name+' (ID:'+client.user.id+') | Connected to ' +
-          str(len(client.servers))+' servers | Connected to '+str(len(set(client.get_all_members())))+' users')
+    print('Logged in as ' + client.user.name + ' (ID:' + str(client.user.id) + ') | Connected to '
+          + str(len(client.guilds)) + ' servers | Connected to ' + str(len(set(client.get_all_members()))) + ' users')
     print('--------')
     print('Current Discord.py Version: {} | Current Python Version: {}'.format(
         discord.__version__, platform.python_version()))
@@ -58,10 +61,9 @@ async def on_ready():
     print('Use this link to invite {}:'.format(client.user.name))
     print('https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8'.format(client.user.id))
     print('--------')
-    print('Based on Habchy\'s BasicBot')
-    print('Github Link: https://github.com/Habchy/BasicBot')
+    print('Github Link: https://github.com/CedArctic/Chimera')
     print('--------')
-    return await client.change_presence(game=discord.Game(name='with your PC'))
+    return await client.change_presence(activity=discord.Game(name='with your PC'))
 
 
 # Module: cmd
@@ -70,11 +72,11 @@ async def on_ready():
 # Dependencies: time, os
 @client.command()
 @Logger(client)
-async def cmd(cmnd):
-    await client.say("Executing in command prompt: " + cmnd)
+async def cmd(ctx, cmnd):
+    await ctx.send("Executing in command prompt: " + cmnd)
     cmnd_result = os.popen(cmnd).read()
     if Configs.initial_display_output:
-        await client.say(cmnd_result)
+        await ctx.send(cmnd_result)
     await asyncio.sleep(3)
 
 
@@ -84,14 +86,14 @@ async def cmd(cmnd):
 # Dependencies: time, os
 @client.command()
 @Logger(client)
-async def powershell(cmnd):
+async def powershell(ctx, cmnd):
     if operating_sys == "Windows":
-        await client.say("Executing in powershell: " + cmnd)
+        await ctx.send("Executing in powershell: " + cmnd)
         cmnd_result = os.popen("powershell {}".format(cmnd)).read()
         if Configs.initial_display_output:
-            await client.say(cmnd_result)
+            await ctx.say(cmnd_result)
     else:
-        await client.say("Powershell is only available in Windows")
+        await ctx.send("Powershell is only available in Windows")
     await asyncio.sleep(3)
 
 
@@ -101,9 +103,10 @@ async def powershell(cmnd):
 # Dependencies: time, os
 @client.command()
 @Logger(client)
-async def lock(seconds = 0):
-    await client.say("Locking system.")
-    if time != 0:
+async def lock(ctx, seconds=0):
+    await ctx.send("Locking system.")
+
+    if seconds != 0:
         time.sleep(seconds)
 
     if operating_sys == "Windows":
@@ -111,7 +114,7 @@ async def lock(seconds = 0):
     elif operating_sys == "Linux":
         os.popen('gnome-screensaver-command --lock')
     else:
-        await client.say("Can't lock system.")
+        await ctx.send("Can't lock system.")
         await asyncio.sleep(3)
 
 
@@ -121,14 +124,14 @@ async def lock(seconds = 0):
 # Dependencies: time, os
 @client.command()
 @Logger(client)
-async def sleep(seconds = 0):
+async def sleep(ctx, seconds=0):
     if operating_sys == "Windows":
-        await client.say("Putting system to sleep.")
+        await ctx.send("Putting system to sleep.")
         if time != 0:
             time.sleep(seconds)
         os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
     else:
-        await client.say("Can't put system to sleep.")
+        await ctx.send("Can't put system to sleep.")
         await asyncio.sleep(3)
 
 
@@ -138,8 +141,8 @@ async def sleep(seconds = 0):
 # Dependencies: time, os
 @client.command()
 @Logger(client)
-async def shutdown(seconds = 0):
-    await client.say("Shutting system down.")
+async def shutdown(ctx, seconds=0):
+    await ctx.send("Shutting system down.")
     if operating_sys == "Windows":
         if time != 0:
             time.sleep(seconds)
@@ -149,7 +152,7 @@ async def shutdown(seconds = 0):
             time.sleep(seconds)
         os.system("shutdown")
     else:
-        await client.say("Can't shutdown system.")
+        await ctx.send("Can't shutdown system.")
         await asyncio.sleep(3)
 
 
@@ -159,8 +162,8 @@ async def shutdown(seconds = 0):
 # Dependencies: time, os
 @client.command()
 @Logger(client)
-async def restart(seconds = 0):
-    await client.say("Restarting system.")
+async def restart(ctx, seconds=0):
+    await ctx.send("Restarting system.")
     if operating_sys == "Windows":
         if time != 0:
             time.sleep(seconds)
@@ -170,7 +173,7 @@ async def restart(seconds = 0):
             time.sleep(seconds)
         os.system("reboot")
     else:
-        await client.say("Can't restart system.")
+        await ctx.send("Can't restart system.")
         await asyncio.sleep(3)
 
 
@@ -180,14 +183,14 @@ async def restart(seconds = 0):
 # Dependencies: time, os
 @client.command()
 @Logger(client)
-async def hibernate(seconds = 0):
-    await client.say("Hibernating system.")
+async def hibernate(ctx, seconds=0):
+    await ctx.send("Hibernating system.")
     if operating_sys == "Windows":
         if time != 0:
             time.sleep(seconds)
         os.system("rundll32.exe PowrProf.dll,SetSuspendState")
     else:
-        await client.say("Can't hibernate system.")
+        await ctx.send("Can't hibernate system.")
         await asyncio.sleep(3)
 
 
@@ -197,33 +200,32 @@ async def hibernate(seconds = 0):
 # Dependencies: time, os
 @client.command()
 @Logger(client)
-async def logoff(seconds = 0):
-    await client.say("Logging out of system.")
+async def logoff(ctx, seconds=0):
+    await ctx.send("Logging out of system.")
     if operating_sys == "Windows":
         if time != 0:
             time.sleep(seconds)
         os.system("Shutdown.exe -l")
     else:
-        await client.say("Can't logoff system.")
+        await ctx.send("Can't logoff system.")
         await asyncio.sleep(3)
-
 
 
 # Module: screenshot
 # Description: Takes a screenshot and sends it back
 # Usage: !screenshot or !screenshot secondsToScreenshot
 # Dependencies: time, os, mss
-@client.command(pass_context = True)
+@client.command()
 @Logger(client)
-async def screenshot(ctx, seconds = 0):
+async def screenshot(ctx, seconds=0):
     if os.path.isfile('screenshot.png'):  # Check if a screenshot.png exists, if yes, delete it so it can be replaced
         os.remove('screenshot.png')
-    await client.say("Taking a screenshot.")
+    await ctx.send("Taking a screenshot.")
     if time != 0:
         time.sleep(seconds)
     with mss() as sct:
         filename = sct.shot(mon=-1, output='screenshot.png')
-    await client.send_file(ctx.message.channel, 'screenshot.png')
+    await ctx.send_file(ctx.message.channel, 'screenshot.png')
 
 
 # Module: say
@@ -232,15 +234,16 @@ async def screenshot(ctx, seconds = 0):
 # Dependencies: time, os
 @client.command()
 @Logger(client)
-async def say(txt):
+async def say(ctx, txt):
     if operating_sys == "Windows":
-        await client.say("Saying: " + txt)
-        os.system("powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
+        await ctx.send("Saying: " + txt)
+        os.system(
+            "powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
     elif operating_sys == "Linux":
-        await client.say("Saying: " + txt)
+        await ctx.send("Saying: " + txt)
         os.system('spd-say "{}"'.format(txt))
     else:
-        await client.say("Can't use TTS")
+        await ctx.send("Can't use TTS")
     await asyncio.sleep(3)
 
 
@@ -250,85 +253,89 @@ async def say(txt):
 # Dependencies: pynput, time, helpers
 @client.command()
 @Logger(client)
-async def media(command,times=1):
+async def media(ctx, command, times=1):
     media_control = MediaControlAdapter(operating_sys)
     switcher = {
-        'vol-up':media_control.up_volume,
-        'vol-down':media_control.down_volume,
-        'vol-mute':media_control.mute_volume,
-        'next':media_control.media_next,
-        'prev':media_control.media_previous,
-        'stop':media_control.media_stop,
-        'play':media_control.media_play_pause,
-        'pause':media_control.media_play_pause
-        }
+        'vol-up': media_control.up_volume,
+        'vol-down': media_control.down_volume,
+        'vol-mute': media_control.mute_volume,
+        'next': media_control.media_next,
+        'prev': media_control.media_previous,
+        'stop': media_control.media_stop,
+        'play': media_control.media_play_pause,
+        'pause': media_control.media_play_pause
+    }
 
-    for time in range(0,times):
+    for time in range(0, times):
         switcher[command]()
         await asyncio.sleep(0.5)
 
-    await client.say('Media Adjusted!')
+    await ctx.send('Media Adjusted!')
 
 
 # Module: camera
 # Description: Records a video or takes a photo (no audio)
 # Usage: !camera command time
 # Dependencies: cv2, datetime, timedelta
-@client.command(pass_context = True)
+@client.command()
 @Logger(client)
 async def camera(ctx, command, time=5):
-    await client.say('Recording!')
+    await ctx.send('Recording!')
     python_alias = Configs.PYTHON_ALIAS
 
     if command == 'photo':
-#         CameraControl.photo_capture()
-        os.system("{} lib/camera_control.py photo".format(python_alias))#workaround
-        await client.send_file(ctx.message.channel, 'photo.jpg')
+        # CameraControl.photo_capture()
+        os.system("{} lib/camera_control.py photo".format(python_alias))  # workaround
+        await ctx.send_file(ctx.message.channel, 'photo.jpg')
 
     if command == 'video':
-#         await CameraControl.video_capture(time=time)
-        os.system("{} lib/camera_control.py video {}".format(python_alias,time))#workaround
-        await client.send_file(ctx.message.channel, 'video.avi')
+        # await CameraControl.video_capture(time=time)
+        os.system("{} lib/camera_control.py video {}".format(python_alias, time))  # workaround
+        await ctx.send_file(ctx.message.channel, 'video.avi')
+
+
 # Module: echo
 # Description: Turns command output display to discord chat on and off (works for !cmd and !powershell)
 # Usage: !echo off or !echo on
 # Dependencies: None
 @client.command()
 @Logger(client)
-async def echo(status):
+async def echo(ctx, status):
     if status == "on":
         Configs.initial_display_output = True
-        await client.say("!cmd and !powershell output will be displayed in chat. ")
+        await ctx.send("!cmd and !powershell output will be displayed in chat. ")
     elif status == "off":
         Configs.initial_display_output = False
-        await client.say("!cmd and !powershell output will be hidden from chat. ")
+        await ctx.send("!cmd and !powershell output will be hidden from chat. ")
     else:
-        await client.say("Parameter of echo can be off or on. ")
+        await ctx.send("Parameter of echo can be off or on. ")
+
 
 # Module: log
 # Description: Turns on of off logs in chat. Also can be used to retrieve Chimera execution logs
 # Usage: !log [off|on] | [show] [date (format: YYYY-MM-DD)]
 # Dependencies: logging, datetime
-@client.command(pass_context = True)
+@client.command()
 @Logger(client)
-async def log(ctx,param, date=None):
+async def log(ctx, param, date=None):
     if param == "on":
         Configs.discord_logs_enabled = True
-        await client.say("Exceptions log will now be displayed in chat.")
+        await ctx.send("Exceptions log will now be displayed in chat.")
     elif param == "off":
         Configs.discord_logs_enabled = False
-        await client.say("Running on silent mode now.")
+        await ctx.send("Running on silent mode now.")
     elif param == "show":
         date = date if date else (datetime.now()).strftime('%Y-%m-%d')
-        await client.send_file(ctx.message.channel, '{}/{}.txt'.format(Logger.DIRECTORY,date))
+        await ctx.send_file(ctx.message.channel, '{}/{}.txt'.format(Logger.DIRECTORY, date))
     else:
-        await client.say("Parameter of !log can be off or on. ")
+        await ctx.send("Parameter of !log can be off or on. ")
+
 
 # Module: file
 # Description: Allows file download, upload and system navigation
 # Usage: !file [command] [[path]|[times]]
 # Dependencies: filesystem_control, requests
-@client.command(pass_context = True)
+@client.command()
 @Logger(client)
 async def file(ctx, command, *args):
     filesystem_control = FileSystemControl(Configs.initial_path)
@@ -344,18 +351,18 @@ async def file(ctx, command, *args):
 
     async def retrive_file(path=None):
         file_path = await filesystem_control.retrieve_file(path)
-        await client.send_file(ctx.message.channel, file_path)
+        await ctx.send_file(ctx.message.channel, file_path)
 
     async def save_file(path=None):
         filename = ctx.message.attachments[0]['filename']
         url = ctx.message.attachments[0]['url']
 
         r = requests.get(url, allow_redirects=True)
-        if r.status_code/100 != 2:
+        if r.status_code / 100 != 2:
             raise Exception('Download request from Discord returned {}'.r.status_code)
         file = r.content
 
-        file_path = await filesystem_control.save_file(file,filename,path)
+        file_path = await filesystem_control.save_file(file, filename, path)
         return 'File Saved on {}'.format(file_path)
 
     async def list_directory():
@@ -366,18 +373,18 @@ async def file(ctx, command, *args):
         return result
 
     switcher = {
-        'absolute':set_absolute_path,
-        'relative':set_relative_path,
-        'list':list_directory,
-        'retrieve':retrive_file,
-        'save':save_file
-        }
+        'absolute': set_absolute_path,
+        'relative': set_relative_path,
+        'list': list_directory,
+        'retrieve': retrive_file,
+        'save': save_file
+    }
 
-    if len(args)>0:
+    if len(args) > 0:
         message = await switcher[command](*args)
     else:
         message = await switcher[command]()
-    if message: await client.say(message)
+    if message: await ctx.send(message)
 
 
 # Module: file
@@ -386,28 +393,29 @@ async def file(ctx, command, *args):
 # Dependencies: filesystem_control, requests
 @client.command()
 @Logger(client)
-async def helpme(command=None):
-    readme = open('readme.md','r')
+async def helpme(ctx, command=None):
+    readme = open('readme.md', 'r')
     readme = readme.read()
     readme = readme.split('## ')
-    
+
     if command:
-        features = [x for x in readme if x.split('\n',1)[0] == 'Features Documentation:']
+        features = [x for x in readme if x.split('\n', 1)[0] == 'Features Documentation:']
         features = features[0]
-        
+
         message = features
-        
+
         features = features.split('* ')
-        feature = [x for x in features[1:] if x.replace("!","").split(' ',1)[0] == command]
+        feature = [x for x in features[1:] if x.replace("!", "").split(' ', 1)[0] == command]
         feature = feature[0]
-        
+
         message = "```{}```".format(feature)
     else:
-        features = [x for x in readme if x.split('\n',1)[0] == 'Features List:']
+        features = [x for x in readme if x.split('\n', 1)[0] == 'Features List:']
         features = features[0]
-        
+
         message = "```{}```".format(features)
-    
-    await client.say(message)
+
+    await ctx.send(message)
+
 
 client.run(Configs.BOT_TOKEN)
