@@ -3,14 +3,14 @@
 # Usage: !powershell "command"
 # Dependencies: time, os
 
-import os, asyncio
-import configs as Configs
+import os, asyncio, configs
+
 
 async def powershell(ctx, cmnd):
-    if Configs.operating_sys == "Windows":
+    if configs.operating_sys == "Windows":
         await ctx.send("Executing in powershell: " + cmnd)
         cmnd_result = os.popen("powershell {}".format(cmnd)).read()
-        if Configs.initial_display_output:
+        if configs.initial_display_output:
             await ctx.say(cmnd_result)
     else:
         await ctx.send("Powershell is only available in Windows")

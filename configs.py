@@ -1,4 +1,10 @@
+# Load configuration parameters
+from pathlib import Path
+from dotenv import load_dotenv
 import os, lib.helpers
+
+env_path = Path('.') / '.env'
+load_dotenv(dotenv_path=env_path)
 
 BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 

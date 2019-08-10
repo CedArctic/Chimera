@@ -3,11 +3,11 @@
 # Usage: !sleep or !sleep secondsToSleep
 # Dependencies: time, os
 
-import time, os, asyncio
-import configs as Configs
+import time, os, asyncio, configs
+
 
 async def sleep(ctx, seconds=0):
-    if Configs.operating_sys == "Windows":
+    if configs.operating_sys == "Windows":
         await ctx.send("Putting system to sleep.")
         if time != 0:
             time.sleep(seconds)

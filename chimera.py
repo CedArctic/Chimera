@@ -1,50 +1,19 @@
 # Basic Bot Dependencies
 import discord
-import asyncio
 from discord.ext.commands import Bot
 import platform
 
-from dotenv import load_dotenv
+# Import configurations
+import configs
 
-# Used by !screenshot and !camera commands
-import configs as Configs
-
-# Dependency of: lock, shutdown, sleep, hibernate, logoff, say, restart, screenshot
-import os
-
-# Dependency of: lock, shutdown, sleep, hibernate, logoff, say, restart
-import time
-
-# Dependency of screenshot
-from mss import mss
-
-# Dependency of camera
-# from lib.camera_control import CameraControl #commented because of the workaround
-
-# For using commands in different systems
-from lib.helpers import get_operating
-
-# Dependency of media
-from lib.helpers import MediaControlAdapter
-
-# Dependency of file
-from lib.filesystem_control import FileSystemControl
-import requests
-
-# Dependency of log
-from datetime import datetime
-
-# Module import
+# Modules import
 from modules import cmd_module, powershell_module, lock_module, sleep_module, shutdown_module, restart_module
+from modules import hibernate_module, logoff_module, screenshot_module, say_module, media_module, camera_module
+from modules import echo_module, log_module, file_module, helpme_module
 
-# Load configuration parameters
-load_dotenv()
-
-# Platform name
-operating_sys = get_operating()
 
 # Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
-client = Bot(description="A remote administration bot for Discord", command_prefix=Configs.BOT_PREFIX, pm_help=False)
+client = Bot(description="A remote administration bot for Discord", command_prefix=configs.BOT_PREFIX)
 
 from lib.helpers import Logger
 
@@ -67,6 +36,7 @@ async def on_ready():
     print('--------')
     return await client.change_presence(activity=discord.Game(name='with your PC'))
 
+
 # Module: cmd
 # Description: Executes cmd command
 # Usage: !cmd "command"
@@ -74,6 +44,7 @@ async def on_ready():
 @Logger(client)
 async def cmd(ctx, cmnd):
     await cmd_module.cmd(ctx, cmnd)
+
 
 # Module: powershell
 # Description: Executes powershell command
@@ -123,52 +94,28 @@ async def restart(ctx, seconds=0):
 # Module: hibernate
 # Description: Hibernates the system
 # Usage: !hibernate or !hibernate secondsToHibernation
-# Dependencies: time, os
 @client.command()
 @Logger(client)
 async def hibernate(ctx, seconds=0):
-    await ctx.send("Hibernating system.")
-    if operating_sys == "Windows":
-        if time != 0:
-            time.sleep(seconds)
-        os.system("rundll32.exe PowrProf.dll,SetSuspendState")
-    else:
-        await ctx.send("Can't hibernate system.")
-        await asyncio.sleep(3)
+    await hibernate_module.hibernate(ctx, seconds)
 
 
 # Module: logoff
 # Description: Logs the user out of the system
 # Usage: !logoff or !logoff secondsToLogoff
-# Dependencies: time, os
 @client.command()
 @Logger(client)
 async def logoff(ctx, seconds=0):
-    await ctx.send("Logging out of system.")
-    if operating_sys == "Windows":
-        if time != 0:
-            time.sleep(seconds)
-        os.system("Shutdown.exe -l")
-    else:
-        await ctx.send("Can't logoff system.")
-        await asyncio.sleep(3)
+    await logoff_module.logoff(ctx, seconds)
 
 
 # Module: screenshot
 # Description: Takes a screenshot and sends it back
 # Usage: !screenshot or !screenshot secondsToScreenshot
-# Dependencies: time, os, mss
 @client.command()
 @Logger(client)
 async def screenshot(ctx, seconds=0):
-    if os.path.isfile('screenshot.png'):  # Check if a screenshot.png exists, if yes, delete it so it can be replaced
-        os.remove('screenshot.png')
-    await ctx.send("Taking a screenshot.")
-    if time != 0:
-        time.sleep(seconds)
-    with mss() as sct:
-        filename = sct.shot(mon=-1, output='screenshot.png')
-    await ctx.send_file(ctx.message.channel, 'screenshot.png')
+    await screenshot_module.screenshot(ctx, seconds)
 
 
 # Module: say
@@ -178,187 +125,62 @@ async def screenshot(ctx, seconds=0):
 @client.command()
 @Logger(client)
 async def say(ctx, txt):
-    if operating_sys == "Windows":
-        await ctx.send("Saying: " + txt)
-        os.system(
-            "powershell Add-Type -AssemblyName System.Speech; $synth = New-Object -TypeName System.Speech.Synthesis.SpeechSynthesizer; $synth.Speak('" + txt + "')")
-    elif operating_sys == "Linux":
-        await ctx.send("Saying: " + txt)
-        os.system('spd-say "{}"'.format(txt))
-    else:
-        await ctx.send("Can't use TTS")
-    await asyncio.sleep(3)
+    await say_module.say(ctx, txt)
 
 
 # Module: media
 # Description: Controls Media Features
 # Usage: !media command or !media command times
-# Dependencies: pynput, time, helpers
 @client.command()
 @Logger(client)
 async def media(ctx, command, times=1):
-    media_control = MediaControlAdapter(operating_sys)
-    switcher = {
-        'vol-up': media_control.up_volume,
-        'vol-down': media_control.down_volume,
-        'vol-mute': media_control.mute_volume,
-        'next': media_control.media_next,
-        'prev': media_control.media_previous,
-        'stop': media_control.media_stop,
-        'play': media_control.media_play_pause,
-        'pause': media_control.media_play_pause
-    }
-
-    for time in range(0, times):
-        switcher[command]()
-        await asyncio.sleep(0.5)
-
-    await ctx.send('Media Adjusted!')
+    await media_module.media(ctx, command, times)
 
 
 # Module: camera
 # Description: Records a video or takes a photo (no audio)
 # Usage: !camera command time
-# Dependencies: cv2, datetime, timedelta
 @client.command()
 @Logger(client)
 async def camera(ctx, command, time=5):
-    await ctx.send('Recording!')
-    python_alias = Configs.PYTHON_ALIAS
-
-    if command == 'photo':
-        # CameraControl.photo_capture()
-        os.system("{} lib/camera_control.py photo".format(python_alias))  # workaround
-        await ctx.send_file(ctx.message.channel, 'photo.jpg')
-
-    if command == 'video':
-        # await CameraControl.video_capture(time=time)
-        os.system("{} lib/camera_control.py video {}".format(python_alias, time))  # workaround
-        await ctx.send_file(ctx.message.channel, 'video.avi')
+    await camera_module.camera(ctx, command, time)
 
 
 # Module: echo
 # Description: Turns command output display to discord chat on and off (works for !cmd and !powershell)
 # Usage: !echo off or !echo on
-# Dependencies: None
 @client.command()
 @Logger(client)
 async def echo(ctx, status):
-    if status == "on":
-        Configs.initial_display_output = True
-        await ctx.send("!cmd and !powershell output will be displayed in chat. ")
-    elif status == "off":
-        Configs.initial_display_output = False
-        await ctx.send("!cmd and !powershell output will be hidden from chat. ")
-    else:
-        await ctx.send("Parameter of echo can be off or on. ")
+    await echo_module.echo(ctx, status)
 
 
 # Module: log
 # Description: Turns on of off logs in chat. Also can be used to retrieve Chimera execution logs
 # Usage: !log [off|on] | [show] [date (format: YYYY-MM-DD)]
-# Dependencies: logging, datetime
 @client.command()
 @Logger(client)
 async def log(ctx, param, date=None):
-    if param == "on":
-        Configs.discord_logs_enabled = True
-        await ctx.send("Exceptions log will now be displayed in chat.")
-    elif param == "off":
-        Configs.discord_logs_enabled = False
-        await ctx.send("Running on silent mode now.")
-    elif param == "show":
-        date = date if date else (datetime.now()).strftime('%Y-%m-%d')
-        await ctx.send_file(ctx.message.channel, '{}/{}.txt'.format(Logger.DIRECTORY, date))
-    else:
-        await ctx.send("Parameter of !log can be off or on. ")
+    await log_module.log(ctx, param, date)
 
 
 # Module: file
 # Description: Allows file download, upload and system navigation
 # Usage: !file [command] [[path]|[times]]
-# Dependencies: filesystem_control, requests
 @client.command()
 @Logger(client)
 async def file(ctx, command, *args):
-    filesystem_control = FileSystemControl(Configs.initial_path)
-    await filesystem_control.load_path_from_memory()
-
-    async def set_absolute_path(path):
-        new_path = await filesystem_control.set_path(path, False)
-        return 'Current location set to {}'.format(new_path)
-
-    async def set_relative_path(path):
-        new_path = await filesystem_control.set_path(path, True)
-        return 'Current location set to {}'.format(new_path)
-
-    async def retrive_file(path=None):
-        file_path = await filesystem_control.retrieve_file(path)
-        await ctx.send_file(ctx.message.channel, file_path)
-
-    async def save_file(path=None):
-        filename = ctx.message.attachments[0]['filename']
-        url = ctx.message.attachments[0]['url']
-
-        r = requests.get(url, allow_redirects=True)
-        if r.status_code / 100 != 2:
-            raise Exception('Download request from Discord returned {}'.r.status_code)
-        file = r.content
-
-        file_path = await filesystem_control.save_file(file, filename, path)
-        return 'File Saved on {}'.format(file_path)
-
-    async def list_directory():
-        dir_list = await filesystem_control.list_directory()
-        result = "Directory items:\n"
-        for item in dir_list:
-            result += "`{}`\n".format(item.name)
-        return result
-
-    switcher = {
-        'absolute': set_absolute_path,
-        'relative': set_relative_path,
-        'list': list_directory,
-        'retrieve': retrive_file,
-        'save': save_file
-    }
-
-    if len(args) > 0:
-        message = await switcher[command](*args)
-    else:
-        message = await switcher[command]()
-    if message: await ctx.send(message)
+    await file_module.file(ctx, command, *args)
 
 
-# Module: file
+# Module: helpme
 # Description: Allows file download, upload and system navigation
-# Usage: !file [command] [[path]|[times]]
-# Dependencies: filesystem_control, requests
+# Usage: !file [command]
 @client.command()
 @Logger(client)
 async def helpme(ctx, command=None):
-    readme = open('readme.md', 'r')
-    readme = readme.read()
-    readme = readme.split('## ')
-
-    if command:
-        features = [x for x in readme if x.split('\n', 1)[0] == 'Features Documentation:']
-        features = features[0]
-
-        message = features
-
-        features = features.split('* ')
-        feature = [x for x in features[1:] if x.replace("!", "").split(' ', 1)[0] == command]
-        feature = feature[0]
-
-        message = "```{}```".format(feature)
-    else:
-        features = [x for x in readme if x.split('\n', 1)[0] == 'Features List:']
-        features = features[0]
-
-        message = "```{}```".format(features)
-
-    await ctx.send(message)
+    await helpme_module.helpme(ctx, command)
 
 
-client.run(Configs.BOT_TOKEN)
+# Application Entry Point
+client.run(configs.BOT_TOKEN)
