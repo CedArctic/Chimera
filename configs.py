@@ -1,4 +1,4 @@
-import os
+import os, lib.helpers
 
 BOT_TOKEN = os.getenv('DISCORD_BOT_TOKEN')
 
@@ -15,3 +15,5 @@ initial_display_output = os.getenv('INITIAL_DISPLAY_OUTPUT', True)
 initial_path = os.getenv('INITIAL_PATH')
 
 discord_logs_enabled = os.getenv('DISCORD_LOGS_ENABLED', False)
+
+operating_sys = lib.helpers.get_operating()

@@ -2,12 +2,9 @@
 import discord
 import asyncio
 from discord.ext.commands import Bot
-from discord.ext import commands
 import platform
 
 from dotenv import load_dotenv
-
-load_dotenv()
 
 # Used by !screenshot and !camera commands
 import configs as Configs
@@ -37,12 +34,17 @@ import requests
 # Dependency of log
 from datetime import datetime
 
+# Module import
+from modules import cmd_module, powershell_module, lock_module, sleep_module, shutdown_module, restart_module
+
+# Load configuration parameters
+load_dotenv()
+
 # Platform name
 operating_sys = get_operating()
 
 # Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
-client = Bot(description="A remote administration bot for Discord",
-             command_prefix=Configs.BOT_PREFIX, pm_help=False)
+client = Bot(description="A remote administration bot for Discord", command_prefix=Configs.BOT_PREFIX, pm_help=False)
 
 from lib.helpers import Logger
 
@@ -65,116 +67,57 @@ async def on_ready():
     print('--------')
     return await client.change_presence(activity=discord.Game(name='with your PC'))
 
-
 # Module: cmd
 # Description: Executes cmd command
 # Usage: !cmd "command"
-# Dependencies: time, os
 @client.command()
 @Logger(client)
 async def cmd(ctx, cmnd):
-    await ctx.send("Executing in command prompt: " + cmnd)
-    cmnd_result = os.popen(cmnd).read()
-    if Configs.initial_display_output:
-        await ctx.send(cmnd_result)
-    await asyncio.sleep(3)
-
+    await cmd_module.cmd(ctx, cmnd)
 
 # Module: powershell
 # Description: Executes powershell command
 # Usage: !powershell "command"
-# Dependencies: time, os
 @client.command()
 @Logger(client)
 async def powershell(ctx, cmnd):
-    if operating_sys == "Windows":
-        await ctx.send("Executing in powershell: " + cmnd)
-        cmnd_result = os.popen("powershell {}".format(cmnd)).read()
-        if Configs.initial_display_output:
-            await ctx.say(cmnd_result)
-    else:
-        await ctx.send("Powershell is only available in Windows")
-    await asyncio.sleep(3)
+    await powershell_module.powershell(ctx, cmnd)
 
 
 # Module: lock
 # Description: Locks system
 # Usage: !lock or !lock secondsToLock
-# Dependencies: time, os
 @client.command()
 @Logger(client)
 async def lock(ctx, seconds=0):
-    await ctx.send("Locking system.")
-
-    if seconds != 0:
-        time.sleep(seconds)
-
-    if operating_sys == "Windows":
-        os.system("rundll32.exe user32.dll,LockWorkStation")
-    elif operating_sys == "Linux":
-        os.popen('gnome-screensaver-command --lock')
-    else:
-        await ctx.send("Can't lock system.")
-        await asyncio.sleep(3)
+    await lock_module.lock(ctx, seconds)
 
 
 # Module: sleep
 # Description: Puts system to sleep
 # Usage: !sleep or !sleep secondsToSleep
-# Dependencies: time, os
 @client.command()
 @Logger(client)
 async def sleep(ctx, seconds=0):
-    if operating_sys == "Windows":
-        await ctx.send("Putting system to sleep.")
-        if time != 0:
-            time.sleep(seconds)
-        os.system("rundll32.exe powrprof.dll,SetSuspendState 0,1,0")
-    else:
-        await ctx.send("Can't put system to sleep.")
-        await asyncio.sleep(3)
+    await sleep_module.sleep(ctx, seconds)
 
 
 # Module: shutdown
 # Description: Shuts system down
 # Usage: !shutdown or !shutdown secondsToShutdown
-# Dependencies: time, os
 @client.command()
 @Logger(client)
 async def shutdown(ctx, seconds=0):
-    await ctx.send("Shutting system down.")
-    if operating_sys == "Windows":
-        if time != 0:
-            time.sleep(seconds)
-        os.system("Shutdown.exe -s -t 0")
-    elif operating_sys == "Linux":
-        if time != 0:
-            time.sleep(seconds)
-        os.system("shutdown")
-    else:
-        await ctx.send("Can't shutdown system.")
-        await asyncio.sleep(3)
+    await shutdown_module.shutdown(ctx, seconds)
 
 
 # Module: restart
 # Description: Restarts system
 # Usage: !restart or !restart secondsToRestart
-# Dependencies: time, os
 @client.command()
 @Logger(client)
 async def restart(ctx, seconds=0):
-    await ctx.send("Restarting system.")
-    if operating_sys == "Windows":
-        if time != 0:
-            time.sleep(seconds)
-        os.system("Shutdown.exe -r")
-    elif operating_sys == "Linux":
-        if time != 0:
-            time.sleep(seconds)
-        os.system("reboot")
-    else:
-        await ctx.send("Can't restart system.")
-        await asyncio.sleep(3)
+    await restart_module.restart(ctx, seconds)
 
 
 # Module: hibernate
