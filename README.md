@@ -95,6 +95,9 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 * !helpme or !helpme command
 	> shows Chimera help, listing commands of shows help for a specific command, e.g: !helpme screenshot
 
+* !launch shortcut
+    > launches a custom shortcut you placed in the shortcuts folder
+
 * EOF
 ```
 Note: Some commands may require elevated privileges on linux.
@@ -114,30 +117,14 @@ Text Instructions:
 
 
 ## Contributing:
-Chimera was written to be modular so one can easily modify the code and enchance it. I welcome and greatly appreciate anyone who wishes to contribute a module of their own.
-To keep things tidy if you need to import a python module do so on the top of the file in this fashion e.g:
+Chimera was written to be modular so one can easily modify the code and enhance it. I welcome and greatly appreciate anyone who wishes to contribute a module of their own.
+Here's how to create a Chimera module:
 
-```
-# Dependency of: lock, shutdown, sleep, hibernate, say, restart
-import time
-```
-and for your command function:
+1. Create your *_module.py under the modules directory. See lock_module.py for a good example on how to structure yours
+2. Create an entry for your modules in chimera.py. The file is full of examples.
+3. Test Chimera with your changes and make a pull request if everything works well
+4. Update the README.md file to include your new module and your github profile under Contributors
 
-```
-# Module: cmd
-# Description: Executes cmd command
-# Usage: !cmd "command"
-# Dependencies: time, os
-@client.command()
-async def cmd(cmnd):
-	await client.say("Executing in command prompt: " + cmnd)
-	os.system(cmnd)
-	await asyncio.sleep(3)
-```
-
-## Changelog:
-* April 1st 2018: Initial Release
-* April 28th 2018: Added Screenshot feature
 
 ## Credits:
 * [Habchy](https://github.com/Habchy) for writing BasicBot which was the base for chimera

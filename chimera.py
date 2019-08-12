@@ -120,7 +120,6 @@ async def screenshot(ctx, seconds=0):
 # Module: say
 # Description: Uses powershell and a TTS engine to make your computer say something
 # Usage: !say "Something to say"
-# Dependencies: time, os
 @client.command()
 @Logger(client)
 async def say(ctx, txt):
@@ -170,6 +169,14 @@ async def log(ctx, param, date=None):
 @Logger(client)
 async def file(ctx, command, *args):
     await file_module.file(ctx, command, *args)
+
+# Module: launch
+# Description: Launches a shortcut in the shortcuts directory
+# Usage: !launch [shortcut]
+@client.command()
+@Logger(client)
+async def launch(ctx, shortcut):
+    await launch_module.launch(ctx, shortcut)
 
 
 # Module: helpme
