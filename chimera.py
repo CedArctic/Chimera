@@ -1,4 +1,4 @@
-# Basic Bot Dependencies
+# Basic bot dependencies
 import discord
 from discord.ext.commands import Bot
 import platform
@@ -6,16 +6,15 @@ import platform
 # Import configurations
 import configs
 
-# Modules import
-from modules import cmd_module, powershell_module, lock_module, sleep_module, shutdown_module, restart_module
-from modules import hibernate_module, logoff_module, screenshot_module, say_module, media_module, camera_module
-from modules import echo_module, log_module, file_module, helpme_module
-
-
-# Here you can modify the bot's prefix and description and whether it sends help in direct messages or not.
-client = Bot(description="A remote administration bot for Discord", command_prefix=configs.BOT_PREFIX)
-
+# Import logger
 from lib.helpers import Logger
+
+# Modules import - this imports all modules under the modules directory
+# IDEs will complain about unresolved references, but it runs as intended
+from modules import *
+
+# Create a bot client with a description and a command prefix
+client = Bot(description="A remote system administration bot for discord", command_prefix=configs.BOT_PREFIX)
 
 
 @client.event

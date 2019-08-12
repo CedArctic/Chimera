@@ -24,8 +24,24 @@ async def file(ctx, command, *args):
         await ctx.send(file=discord.File(file_path))
 
     async def save_file(path=None):
-        filename = ctx.message.attachments[0]['filename']
-        url = ctx.message.attachments[0]['url']
+
+        filename = ctx.message.attachments[0].filename
+        url = ctx.message.attachments[0].url
+
+        r = requests.get(url, allow_redirects=True)
+        if r.status_code / 100 != 2:
+            raise Exception('Download request from Discord returned {}'.r.status_code)
+        file = r.content
+
+        file_path = await filesystem_control.save_file(file, filename, path)
+        return 'File Saved on {}'.format(file_path)
+
+    async def download_file(url=None, path=None):
+
+        if url == None:
+            return 'No direct file URL was provided'
+
+        filename = url[url.rfind("/") + 1:]
 
         r = requests.get(url, allow_redirects=True)
         if r.status_code / 100 != 2:
@@ -47,7 +63,8 @@ async def file(ctx, command, *args):
         'relative': set_relative_path,
         'list': list_directory,
         'retrieve': retrive_file,
-        'save': save_file
+        'save': save_file,
+        'download': download_file
     }
 
     if len(args) > 0:

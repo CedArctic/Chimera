@@ -90,6 +90,7 @@ Installing chimera is an easy 3 minute process - you can check the video bellow 
 		- list => lists current path
 		- retrieve => uploads a file to the chat
 		- save => saves a file to the HD from the chat
+		- download => saves a file from a direct url to the HD
 		
 * !helpme or !helpme command
 	> shows Chimera help, listing commands of shows help for a specific command, e.g: !helpme screenshot
