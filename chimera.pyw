@@ -22,6 +22,7 @@ from modules import *
 # Create a bot client with a description and a command prefix
 client = Bot(description="A remote system administration bot for discord", command_prefix=configs.BOT_PREFIX)
 
+
 @client.event
 async def on_ready():
     print('--------')
@@ -194,41 +195,57 @@ async def helpme(ctx, command=None):
     await helpme_module.helpme(ctx, command)
 
 
-
 # System Tray menu functions
 
 # Starts the bot client
-def iconSetup(icon): client.run(configs.BOT_TOKEN)
+def iconRun(icon): client.run(configs.BOT_TOKEN)
+
+
 # Shows logs folder
 def showLogs(): os.startfile("logs")
+
+
 # Shows shortcuts folder
 def showShortcuts(): os.startfile("shortcuts")
+
+
 # Opens bot invitation link in the browser
-def connectInfo():webbrowser.open('https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8'.format(client.user.id))
+def connectInfo(): webbrowser.open(
+    'https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8'.format(client.user.id))
+
+
 # Exits the application
 def applicationExit():
     # This doesn't quit the bot client. To do that you need to call client.logout or .close
     # This merely stops the icon from showing on the taskbar. A full solution will be implemented later
     icon.visible = False
     icon.stop()
+
+
 # About
 def about(): webbrowser.open('https://github.com/CedArctic/Chimera/blob/master/README.md')
+
+
 # Instructions
 def instructions(): webbrowser.open('https://github.com/CedArctic/Chimera/blob/master/README.md')
 
+
 # Create system tray icon and start running the client
-iconImage = Image.open("Chimera_logo.png")
-iconMenu = Menu(
-    MenuItem("Connect", action=connectInfo, default=True),
-    MenuItem("Instructions", action=instructions),
-    MenuItem("Show Logs", action=showLogs),
-    MenuItem("Show Shortcuts", action=showShortcuts),
-    MenuItem("About", action=about),
-    MenuItem("Exit", action=applicationExit),
-)
-icon = Icon('Chimera', icon=iconImage, menu=iconMenu)
-icon.visible = True
+def iconSetup():
+    iconImage = Image.open("Chimera_logo.png")
+    iconMenu = Menu(
+        MenuItem("Connect", action=connectInfo, default=True),
+        MenuItem("Instructions", action=instructions),
+        MenuItem("Show Logs", action=showLogs),
+        MenuItem("Show Shortcuts", action=showShortcuts),
+        MenuItem("About", action=about),
+        MenuItem("Exit", action=applicationExit),
+    )
+    icon = Icon('Chimera', icon=iconImage, menu=iconMenu)
+    icon.visible = True
+    return icon
 
 
 # Application Entry Point - starts icon and bot client
-icon.run(setup=iconSetup)
+icon = iconSetup()
+icon.run(setup=iconRun)

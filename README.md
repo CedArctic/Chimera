@@ -113,7 +113,7 @@ Text Instructions:
 1. Download & Install Python
 2. Create a bot and get its token and then get your channel ID by following these instructions: https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord
 3. Download the repository, run setup.bat on Windows or setup.sh on Linux and put your Bot Token in the newly created .env file. 
-4. Launch Chimera.py and visit the URL printed in the console to add Chimera to a personal channel
+4. Launch chimera.pyw, right click on the system tray icon and hit Connect to invite chimera to your server
 5. Enjoy!
 
 Video tutorial (outdated):
