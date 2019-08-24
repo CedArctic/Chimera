@@ -6,3 +6,4 @@ requests
 python-dotenv
 Pillow
 pystray
+plyer

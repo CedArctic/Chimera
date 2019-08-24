@@ -188,11 +188,21 @@ async def launch(ctx, shortcut):
 
 # Module: helpme
 # Description: Allows file download, upload and system navigation
-# Usage: !file [command]
+# Usage: !helpme [command]
 @client.command()
 @Logger(client)
 async def helpme(ctx, command=None):
     await helpme_module.helpme(ctx, command)
+
+
+# Module: notification
+# Description: Sends a notification to the computer
+# Usage: !notification "Notification Content"
+@client.command()
+@Logger(client)
+async def notification(ctx, txt):
+    await notification_module.notification(ctx, txt)
+
 
 
 # System Tray menu functions

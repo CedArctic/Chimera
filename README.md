@@ -104,6 +104,9 @@ Installing Chimera is an easy 3 minute process - you can check the instructions 
 
 * !launch shortcut
     > launches a custom shortcut you placed in the shortcuts folder
+    
+* !notification "Notification Content"
+    > sends a notification to the computer
 
 * EOF
 ```
