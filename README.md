@@ -38,6 +38,7 @@ Installing Chimera is an easy 3 minute process - you can check the instructions 
 * log
 * file
 * launch
+* notification
 * helpme
 
 ## Features Documentation:
