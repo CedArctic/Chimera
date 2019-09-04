@@ -122,9 +122,9 @@ Text Instructions:
 4. Launch chimera.pyw, right click on the system tray icon and hit Connect to invite chimera to your server
 5. Enjoy!
 
-Video tutorial (outdated):
+Video tutorial:
 
-[![Video Tutorial](https://j.gifs.com/l5m85j.gif)](https://www.youtube.com/watch?v=Q5gkddzSCgA)
+[![Video Tutorial](https://j.gifs.com/l5m85j.gif)](https://www.youtube.com/watch?v=JXqS3WaTOB4)
 
 
 
