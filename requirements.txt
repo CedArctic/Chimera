@@ -1,3 +1,9 @@
 discord.py
 mss
 opencv-python
+pynput
+requests
+python-dotenv
+Pillow
+pystray
+plyer

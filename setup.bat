@@ -4,16 +4,16 @@ echo Installing required packages.
 
 pip install -U -r .\requirements.txt
 
-echo Creating local_credentials.py
+SET exampleFile=".env.example"
+SET newFile=".env."
 
-echo BOT_TOKEN = 'Enter Token Here' > local_credentials.py
+echo Creating environment configuration file
 
-echo. >> local_credentials.py
+IF EXIST %newFile% (
+  echo Configuration file already exists
+) ELSE (
+  copy %exampleFile% %newFile%
+)
+echo Done. Please fill the required field in %newFile%
 
-echo CHANNEL_ID = 'Enter Channel ID here' >> local_credentials.py
-
-echo. >> local_credentials.py
-
-echo PYTHON_ALIAS = 'python' #only change if you have multiple python installations >> local_credentials.py
-
-echo Done. Please fill the required field in local_credentials.py
+pause
