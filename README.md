@@ -43,6 +43,9 @@ Installing Chimera is an easy 3 minute process - you can check the instructions 
 
 ## Features Documentation:
 
+* !helpme or !helpme *command*
+	> shows Chimera help, listing commands of shows help for a specific command, e.g: !helpme screenshot
+
 * !lock or !lock *seconds*
 	> locks your computer immediately or with a time delay in seconds, e.g: !lock 30
 * !shutdown or !shutdown *seconds*
@@ -99,14 +102,11 @@ Installing Chimera is an easy 3 minute process - you can check the instructions 
 		- retrieve => uploads a file to the chat
 		- save => saves a file to the HD from the chat
 		- download => saves a file from a direct url to the HD
-		
-* !helpme or !helpme *command*
-	> shows Chimera help, listing commands of shows help for a specific command, e.g: !helpme screenshot
 
 * !launch *shortcut*
     > launches a custom shortcut you placed in the shortcuts folder
     
-* !notification "Notification Content"
+* !notification "*message*"
     > sends a notification to the computer
 
 * EOF
