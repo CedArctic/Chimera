@@ -3,6 +3,8 @@ import discord
 from discord.ext.commands import Bot
 import platform
 import os
+import asyncio
+from threading import Thread
 
 # Import configurations
 import configs
@@ -208,7 +210,11 @@ async def notification(ctx, txt):
 # System Tray menu functions
 
 # Starts the bot client
-def iconRun(icon): client.run(configs.BOT_TOKEN)
+def iconRun():
+    loop = asyncio.get_event_loop()
+    loop.create_task(client.start(configs.BOT_TOKEN))
+    t1=Thread(target=loop.run_forever)
+    t1.start()
 
 
 # Shows logs folder
@@ -252,10 +258,10 @@ def iconSetup():
         MenuItem("Exit", action=applicationExit),
     )
     icon = Icon('Chimera', icon=iconImage, menu=iconMenu)
-    icon.visible = True
     return icon
 
 
 # Application Entry Point - starts icon and bot client
 icon = iconSetup()
-icon.run(setup=iconRun)
+iconRun()
+icon.run()
