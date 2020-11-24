@@ -109,20 +109,18 @@ Installing Chimera is an easy 3 minute process - you can check the instructions 
 * !notification "*message*"
     > sends a notification to the computer
 
-* EOF
-
-Note: Some commands may require elevated privileges on linux.
+Note: Some commands may require elevated privileges on Linux.
 
 ## Installation:
 
-Text Instructions:
+### Text Instructions:
 1. Download & Install Python
 2. Create a bot and get its token and then get your channel ID by following these instructions: https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord
 3. Download the repository, run setup.bat on Windows or setup.sh on Linux and put your Bot Token in the newly created .env file. 
 4. Launch chimera.pyw, right click on the system tray icon and hit Connect to invite chimera to your server
 5. Enjoy!
 
-Video tutorial:
+### Video tutorial:
 
 [![Video Tutorial](https://j.gifs.com/l5m85j.gif)](https://www.youtube.com/watch?v=JXqS3WaTOB4)
 
@@ -153,3 +151,4 @@ Here's how to create a Chimera module:
 * [sn0wmanmj](https://github.com/sn0wmanmj)
 * [cominixo01](https://github.com/cominixo01)
 * [medusalix](https://github.com/medusalix)
+* [kostino](https://github.com/kostino)
