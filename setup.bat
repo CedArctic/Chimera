@@ -2,7 +2,7 @@
 
 echo Installing required packages.
 
-pip install -U -r .\requirements.txt
+pip install --user -r .\requirements.txt
 
 SET exampleFile=".env.example"
 SET newFile=".env."
