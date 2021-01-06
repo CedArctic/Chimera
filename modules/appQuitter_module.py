@@ -1,6 +1,6 @@
-# Module: lock
-# Description: Locks system
-# Usage: !lock or !lock secondsToLock
+# Module: appQuitter
+# Description: Quits the application
+# Usage: !appquitter "Application Name" or !appquitter "Application Name" minutesToQuit
 # Dependencies: time, os
 
 import os, time, asyncio, configs
