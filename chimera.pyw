@@ -72,7 +72,7 @@ async def lock(ctx, seconds=0):
 
 # Module: appQuitter
 # Description: Quits the application
-# Usage: !appquitter "Application Name" minutesToQuit
+# Usage: !appquitter "Application Name" or !appquitter "Application Name" minutesToQuit
 @client.command()
 @Logger(client)
 async def appquitter(ctx, appName,minutes=0):
