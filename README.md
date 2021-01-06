@@ -49,7 +49,7 @@ Installing Chimera is an easy 3 minute process - you can check the instructions 
 
 * !lock or !lock *seconds*
 	> locks your computer immediately or with a time delay in seconds, e.g: !lock 30
-* !appquitter *Application_Name* *minutes*
+* !appquitter *Application_Name* or !appquitter *Application_Name* *minutes*
 	> quits the specified application with a time delay in minutes, e.g: !appquitter chrome 30
 * !shutdown or !shutdown *seconds*
 	> shuts down your computer immediately or with a time delay in seconds, e.g: !shutdown 30
