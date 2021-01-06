@@ -23,6 +23,7 @@ Installing Chimera is an easy 3 minute process - you can check the instructions 
 
 ## Features List:
 * lock
+* appquitter
 * shutdown
 * sleep
 * hibernate
@@ -48,6 +49,8 @@ Installing Chimera is an easy 3 minute process - you can check the instructions 
 
 * !lock or !lock *seconds*
 	> locks your computer immediately or with a time delay in seconds, e.g: !lock 30
+* !appquitter *Application Name* *minutes*
+	> quits the specified application with a time delay in minutes, e.g: !appquitter chrome 30
 * !shutdown or !shutdown *seconds*
 	> shuts down your computer immediately or with a time delay in seconds, e.g: !shutdown 30
 * !sleep or !sleep *seconds*
@@ -152,3 +155,4 @@ Here's how to create a Chimera module:
 * [cominixo01](https://github.com/cominixo01)
 * [medusalix](https://github.com/medusalix)
 * [kostino](https://github.com/kostino)
+* [GAK](https://github.com/Arvinth-Krishna)
