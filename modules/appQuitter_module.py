@@ -11,7 +11,7 @@ async def appquitter(ctx,appName, minutes=0):
     minutes=minutes*60
 
     if minutes != 0:
-        time.sleep(minutes)
+        await asyncio.sleep(minutes)
 
     if configs.operating_sys == "Windows":
         os.system("taskkill /F /IM {0}.exe".format(appName))
