@@ -70,7 +70,15 @@ async def powershell(ctx, cmnd):
 async def lock(ctx, seconds=0):
     await lock_module.lock(ctx, seconds)
 
-
+# Module: appQuitter
+# Description: Quits the application
+# Usage: !appquitter "Application Name" or !appquitter "Application Name" minutesToQuit
+@client.command()
+@Logger(client)
+async def appquitter(ctx, appName,minutes=0):
+    await appQuitter_module.appquitter(ctx,appName, minutes)
+    
+    
 # Module: sleep
 # Description: Puts system to sleep
 # Usage: !sleep or !sleep secondsToSleep
