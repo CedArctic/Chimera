@@ -22,6 +22,7 @@ Installing Chimera is an easy 3 minute process - you can check the instructions 
 * Pillow
 
 ## Features List:
+* openurl
 * lock
 * appquitter
 * shutdown
@@ -46,7 +47,8 @@ Installing Chimera is an easy 3 minute process - you can check the instructions 
 
 * !helpme or !helpme *command*
 	> shows Chimera help, listing commands of shows help for a specific command, e.g: !helpme screenshot
-
+* !openurl *url*
+	> opens url in default browser, e.g: !openurl https://example.com
 * !lock or !lock *seconds*
 	> locks your computer immediately or with a time delay in seconds, e.g: !lock 30
 * !appquitter *Application_Name* or !appquitter *Application_Name* *minutes*
