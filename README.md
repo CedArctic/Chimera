@@ -156,3 +156,4 @@ Here's how to create a Chimera module:
 * [medusalix](https://github.com/medusalix)
 * [kostino](https://github.com/kostino)
 * [GAK](https://github.com/Arvinth-Krishna)
+* [BlazerYoo](https://github.com/BlazerYoo/)
