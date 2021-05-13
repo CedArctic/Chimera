@@ -17,6 +17,6 @@ async def log(ctx, param, date=None):
         await ctx.send("Running on silent mode now.")
     elif param == "show":
         date = date if date else (datetime.now()).strftime('%Y-%m-%d')
-        await ctx.send(file=discord.File('{}/{}.txt'.format(Logger.DIRECTORY, date)))
+        await ctx.send(file=discord.File(f'{Logger.DIRECTORY}/{date}.txt'))
     else:
         await ctx.send("Parameter of !log can be off or on. ")
