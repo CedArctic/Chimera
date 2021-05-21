@@ -44,6 +44,15 @@ async def on_ready():
     return await client.change_presence(activity=discord.Game(name='with your PC'))
 
 
+# Module: openurl
+# Description: Opens url in default browser
+# Usage: !openurl http://example.com/
+@client.command()
+@Logger(client)
+async def openurl(ctx, url):
+    await openurl_module.openurl(ctx, url)
+
+
 # Module: cmd
 # Description: Executes cmd command
 # Usage: !cmd "command"
