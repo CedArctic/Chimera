@@ -11,10 +11,10 @@ async def camera(ctx, command, time=5):
 
     if command == 'photo':
         # CameraControl.photo_capture()
-        os.system("{} lib/camera_control.py photo".format(python_alias))  # workaround
+        os.system(f"{python_alias} lib/camera_control.py photo")  # workaround
         await ctx.send(file=discord.File('photo.jpg'))
 
     if command == 'video':
         # await CameraControl.video_capture(time=time)
-        os.system("{} lib/camera_control.py video {}".format(python_alias, time))  # workaround
+        os.system(f"{python_alias} lib/camera_control.py video {time}")  # workaround
         await ctx.send(file=discord.File('video.avi'))

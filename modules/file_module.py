@@ -13,11 +13,11 @@ async def file(ctx, command, *args):
 
     async def set_absolute_path(path):
         new_path = await filesystem_control.set_path(path, False)
-        return 'Current location set to {}'.format(new_path)
+        return f'Current location set to {new_path}'
 
     async def set_relative_path(path):
         new_path = await filesystem_control.set_path(path, True)
-        return 'Current location set to {}'.format(new_path)
+        return f'Current location set to {new_path}'
 
     async def retrive_file(path=None):
         file_path = await filesystem_control.retrieve_file(path)
@@ -34,7 +34,7 @@ async def file(ctx, command, *args):
         file = r.content
 
         file_path = await filesystem_control.save_file(file, filename, path)
-        return 'File Saved on {}'.format(file_path)
+        return f'File Saved on {file_path}'
 
     async def download_file(url=None, path=None):
 
@@ -49,13 +49,13 @@ async def file(ctx, command, *args):
         file = r.content
 
         file_path = await filesystem_control.save_file(file, filename, path)
-        return 'File Saved on {}'.format(file_path)
+        return f'File Saved on {file_path}'
 
     async def list_directory():
         dir_list = await filesystem_control.list_directory()
         result = "Directory items:\n"
         for item in dir_list:
-            result += "`{}`\n".format(item.name)
+            result += f"`{item.name}`\n"
         return result
 
     switcher = {

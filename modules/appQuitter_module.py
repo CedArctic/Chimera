@@ -7,16 +7,16 @@ import os, time, asyncio, configs
 
 
 async def appquitter(ctx,appName, minutes=0):
-    await ctx.send("Quitting {0} App".format(appName.upper()))
+    await ctx.send(f"Quitting {appName.upper()} App")
     minutes=minutes*60
 
     if minutes != 0:
         await asyncio.sleep(minutes)
 
     if configs.operating_sys == "Windows":
-        os.system("taskkill /F /IM {0}.exe".format(appName))
+        os.system(f"taskkill /F /IM {appName}.exe")
     elif configs.operating_sys == "Linux":
-        os.popen("pkill -f {0}".format(appName))
+        os.popen(f"pkill -f {appName}")
     else:
         await ctx.send("Can't quit the app.")
         await asyncio.sleep(3)

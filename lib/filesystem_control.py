@@ -24,7 +24,7 @@ class FileSystemControl:
         path = path.resolve()
         
         if not path.exists():
-            raise Exception('Path [{}] does not exists!'.format(path))
+            raise Exception(f'Path [{path}] does not exists!')
         
         return path
     
@@ -65,4 +65,3 @@ class FileSystemControl:
         path = Path(file_path,file_name)
         path.write_bytes(file)
         return path
-    

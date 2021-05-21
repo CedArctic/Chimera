@@ -33,11 +33,10 @@ async def on_ready():
     print('Logged in as ' + client.user.name + ' (ID:' + str(client.user.id) + ') | Connected to '
           + str(len(client.guilds)) + ' servers | Connected to ' + str(len(set(client.get_all_members()))) + ' users')
     print('--------')
-    print('Current Discord.py Version: {} | Current Python Version: {}'.format(
-        discord.__version__, platform.python_version()))
+    print(f'Current Discord.py Version: {discord.__version__} | Current Python Version: {platform.python_version()}')
     print('--------')
-    print('Use this link to invite {}:'.format(client.user.name))
-    print('https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8'.format(client.user.id))
+    print(f'Use this link to invite {client.user.name}:')
+    print(f'https://discordapp.com/oauth2/authorize?client_id={client.user.id}&scope=bot&permissions=8')
     print('--------')
     print('Github Link: https://github.com/CedArctic/Chimera')
     print('--------')
@@ -244,7 +243,7 @@ def showShortcuts(): os.startfile("shortcuts")
 
 # Opens bot invitation link in the browser
 def connectInfo(): webbrowser.open(
-    'https://discordapp.com/oauth2/authorize?client_id={}&scope=bot&permissions=8'.format(client.user.id))
+    f'https://discordapp.com/oauth2/authorize?client_id={client.user.id}&scope=bot&permissions=8')
 
 
 # Exits the application

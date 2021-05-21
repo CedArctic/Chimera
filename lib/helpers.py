@@ -12,7 +12,7 @@ class Logger(object):
     if not os.path.exists(DIRECTORY):
         os.makedirs(DIRECTORY)
     now = (datetime.now())
-    logging.basicConfig(filename='{}/{}.txt'.format(DIRECTORY,now.strftime('%Y-%m-%d')))
+    logging.basicConfig(filename=f'{DIRECTORY}/{now.strftime('%Y-%m-%d')}.txt')
     log = logging.getLogger()
 
     def __init__(self,client):
@@ -25,11 +25,11 @@ class Logger(object):
             try:
                 return await f(*args,**kwargs)
             except Exception as e:
-                message = '{} - [{}] while executing [!{}] with params [{}] and named params [{}]'.format(self.now.strftime('%Y-%m-%d %H:%M:%S'),str(e),f.__name__,args,kwargs)
+                message = f'{self.now.strftime('%Y-%m-%d %H:%M:%S')} - [{str(e)}] while executing [!{f.__name__}] with params [{args}] and named params [{kwargs}]'
                 if Configs.DISK_LOGS_ENABLED:
                     self.log.error(message)
                 if Configs.discord_logs_enabled:
-                    await self.client.say("`{}`".format(message))
+                    await self.client.say(f"`{message}`")
                 raise
                 
         run.__name__ = f.__name__
@@ -126,4 +126,3 @@ class MediaControlAdapter():
     def media_play_pause(self):
         virtual_key_id = self._command_list[self.os_name][self.VK_MEDIA_PLAY_PAUSE]
         self.input_commands.press_release(virtual_key_id)
-    
