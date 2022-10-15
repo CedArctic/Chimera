@@ -12,7 +12,7 @@ class Logger(object):
     if not os.path.exists(DIRECTORY):
         os.makedirs(DIRECTORY)
     now = (datetime.now())
-    logging.basicConfig(filename=f'{DIRECTORY}/{now.strftime('%Y-%m-%d')}.txt')
+    logging.basicConfig(filename=f'{DIRECTORY}/{now.strftime("%Y-%m-%d")}.txt')
     log = logging.getLogger()
 
     def __init__(self,client):
@@ -25,7 +25,7 @@ class Logger(object):
             try:
                 return await f(*args,**kwargs)
             except Exception as e:
-                message = f'{self.now.strftime('%Y-%m-%d %H:%M:%S')} - [{str(e)}] while executing [!{f.__name__}] with params [{args}] and named params [{kwargs}]'
+                message = f'{self.now.strftime("%Y-%m-%d %H:%M:%S")} - [{str(e)}] while executing [!{f.__name__}] with params [{args}] and named params [{kwargs}]'
                 if Configs.DISK_LOGS_ENABLED:
                     self.log.error(message)
                 if Configs.discord_logs_enabled:
