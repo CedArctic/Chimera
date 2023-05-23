@@ -2,7 +2,7 @@ discord.py==1.5.1
 mss==6.1.0
 opencv-python==4.4.0.46
 pynput==1.7.1
-requests==2.25.0
+requests==2.31.0
 python-dotenv==0.15.0
 Pillow==9.0.0
 pystray==0.17.1
